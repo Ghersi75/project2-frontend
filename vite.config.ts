@@ -15,4 +15,10 @@ export default defineConfig({
     host: true,
     origin: "http://0.0.0.0:8080",
   },
+  resolve: {
+    alias: {
+      // https://www.geeksforgeeks.org/how-to-create-absolute-imports-in-vite-react-app/
+      "@": "src"
+    }
+  }
 });

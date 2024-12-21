@@ -2,15 +2,20 @@
 # Great tutorial on CI/CD pipeline with github actions, Docker and EC2
 name: Docker Image CI
 
+# https://stackoverflow.com/a/64733705
 on:
-  push:
-    branches: ["main"]
+  workflow_run:
+    workflows: ["Run tests"]
+    branches: [main]
+    types:
+      - completed
 
 jobs:
-  build:
+  on-success:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Login Dockerhub
         run: echo "Nice"

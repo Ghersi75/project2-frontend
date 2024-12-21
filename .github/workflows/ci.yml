@@ -10,9 +10,12 @@ on:
     types:
       - completed
 
+# https://github.com/orgs/community/discussions/66512
+# Added explicit check to make sure previous job is successful
 jobs:
-  on-success:
+  deploy:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Checkout repository

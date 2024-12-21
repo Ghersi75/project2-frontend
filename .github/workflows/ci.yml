@@ -1,0 +1,16 @@
+# https://www.youtube.com/watch?v=rRes9LM-Jh8
+# Great tutorial on CI/CD pipeline with github actions, Docker and EC2
+name: Docker Image CI
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Login Dockerhub
+        run: echo "Nice"

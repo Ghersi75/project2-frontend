@@ -9,7 +9,7 @@ export default function LoginController() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    axios.post(`${import.meta.env.VITE_BACKEND}/signup`, {
+    axios.post(`${import.meta.env.VITE_BACKEND}/login`, {
       email,
       password
     }, {

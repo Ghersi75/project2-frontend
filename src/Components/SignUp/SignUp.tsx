@@ -4,8 +4,17 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { useState } from "react";
+import { SignUpPropsType } from "@/Types/SignUpTypes";
 
-export default function Login() {
+export default function SignUp({
+  username,
+  setUsername,
+  email,
+  setEmail,
+  password,
+  setPassword,
+  handleSubmit
+}: SignUpPropsType) {
   const [showingPassword, setShowingPassword] = useState(false);
 
   return (
@@ -15,7 +24,7 @@ export default function Login() {
         <CardDescription> Enter username, email and password to sign up </CardDescription>
       </CardHeader>
       <CardContent>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
               <Label htmlFor="username"> Username </Label>
@@ -23,6 +32,8 @@ export default function Login() {
                 id="username"
                 type="text"
                 placeholder="username"
+                value={username}
+                onChange={(e) => { setUsername(e.target.value) }}
                 required />
             </div>
             <div className="grid gap-2">
@@ -31,12 +42,20 @@ export default function Login() {
                 id="email"
                 type="email"
                 placeholder="example@email.com"
+                value={email}
+                onChange={(e) => { setEmail(e.target.value) }}
                 required />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="password">Password</Label>
               <div className="relative">
-                <Input id="password" type={showingPassword ? "text" : "password"} required className="pr-16" />
+                <Input
+                  id="password"
+                  type={showingPassword ? "text" : "password"}
+                  className="pr-16"
+                  value={password}
+                  onChange={(e) => { setPassword(e.target.value) }}
+                  required />
                 <Label className="absolute right-4 top-1/2 -translate-y-1/2 hover:cursor-pointer hover:underline" onClick={() => { setShowingPassword(prev => !prev) }}> {showingPassword ? "Hide" : "Show"} </Label>
               </div>
             </div>

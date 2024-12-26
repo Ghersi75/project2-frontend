@@ -41,6 +41,7 @@ export default function Login({
                 <Input
                   id="password"
                   type={showingPassword ? "text" : "password"}
+                  placeholder="enter password"
                   className="pr-16"
                   value={password}
                   onChange={(e) => { setPassword(e.target.value) }}

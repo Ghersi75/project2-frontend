@@ -1,7 +1,3 @@
-import { TextEncoder, TextDecoder } from 'util';
-
-Object.assign(global, { TextDecoder, TextEncoder });
-
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom"
 import SignUp from "./SignUp";

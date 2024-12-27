@@ -1,14 +1,14 @@
 import { Link } from "react-router";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card";
-import { GameInfoType } from "./Home";
+import { HomeGameInfoType } from "@/Types/GameAPIReturnTypes";
 import { Badge } from "../ui/badge";
 
 function formatAmount(amount: number): string {
   return `$${(amount/100).toFixed(2)}`
 }
 
-export default function GameCard({ item }: { item: GameInfoType }) {
+export default function GameCard({ item }: { item: HomeGameInfoType }) {
   return (
     <Card className="3xl:w-[500px] w-[400px] p-0">
       <CardContent className="p-0">

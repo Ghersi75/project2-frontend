@@ -1,34 +1,13 @@
 import { useEffect, useState } from "react";
-import Navbar from "../Navbar/Navbar";
-import { Input } from "../ui/input";
 import axios from "axios";
-import { Label } from "../ui/label";
 import GameCard from "./GameCard";
-
-// interface ReturnType {
-//   appId: number,
-//   name: string,
-//   icon: string,
-//   logo: string,
-// }
-
-export interface GameInfoType {
-  id: number,
-  name: string,
-  discounted: boolean,
-  discount_percent: number,
-  original_price: number | null,
-  final_price: number,
-  large_capsule_image: string
-}
+import { HomeGameInfoType } from "@/Types/GameAPIReturnTypes";
 
 export default function Home() {
-  // const [search, setSearch] = useState("");
-  // const [searchResults, setSearchResults] = useState<ReturnType[]>([]);
-  const [specials, setSpecials] = useState<GameInfoType[]>([]);
-  const [topSellers, setTopSellers] = useState<GameInfoType[]>([]);
-  const [newReleases, setNewReleases] = useState<GameInfoType[]>([]);
-  const [comingSoon, setComingSoon] = useState<GameInfoType[]>([]);
+  const [specials, setSpecials] = useState<HomeGameInfoType[]>([]);
+  const [topSellers, setTopSellers] = useState<HomeGameInfoType[]>([]);
+  const [newReleases, setNewReleases] = useState<HomeGameInfoType[]>([]);
+  const [comingSoon, setComingSoon] = useState<HomeGameInfoType[]>([]);
   // const [topSellers, setSpecials] = useState<GameInfoType[]>([]);
   // const [specials, setSpecials] = useState<GameInfoType[]>([]);
 
@@ -92,7 +71,7 @@ export default function Home() {
   // }
 
   return (
-    <div className="w-3/4 p-8 flex flex-col gap-4">
+    <div className="grow p-8 flex flex-col gap-4">
       {/* <Input className="w-3/4" type="text" value={search} onChange={(e) => { setSearch(e.target.value) }} onKeyDown={handleKeyPress} />
       {
         searchResults.map((item, idx) => {
@@ -102,8 +81,8 @@ export default function Home() {
           )
         })
       } */}
-      <h1 className="text-2xl"> Current Specials </h1>
-      <div className="grid gap-8 grid-cols-3 w-full justify-end">
+      <h1 className="text-3xl"> Current Specials </h1>
+      <div className="grid gap-8 2xl:grid-cols-3 grid-cols-2 w-full justify-end">
         {
           specials.map((item, idx) => {
             return (

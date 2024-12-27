@@ -13,17 +13,16 @@ function App() {
   return (
     <BrowserRouter>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <div className="flex flex-col justify-center items-center">
-          <Navbar />
-          <Routes>
+        <Routes>
+          <Route element={<Navbar />}>
             <Route path="" element={<Home />} />
-            <Route path="/:appId" element={<GamePage />}/>
-            <Route element={<AuthLayout />}>
-              <Route path="/login" element={<LoginController />} />
-              <Route path="/signup" element={<SignUpController />} />
-            </Route>
-          </Routes>
-        </div>
+            <Route path="/:appId" element={<GamePage />} />
+          </Route>
+          <Route element={<AuthLayout />}>
+            <Route path="/login" element={<LoginController />} />
+            <Route path="/signup" element={<SignUpController />} />
+          </Route>
+        </Routes>
       </ThemeProvider>
     </BrowserRouter>
   )

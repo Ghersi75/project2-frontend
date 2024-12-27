@@ -10,10 +10,10 @@ function formatAmount(amount: number): string {
 
 export default function GameCard({ item }: { item: HomeGameInfoType }) {
   return (
-    <Card className="3xl:w-[500px] w-[400px] p-0">
+    <Card className="3xl:w-[500px] w-[400px] p-0 overflow-hidden">
       <CardContent className="p-0">
         <CardHeader className="p-0">
-          <img src={item.large_capsule_image} className="rounded-md" />
+          <img src={item.large_capsule_image} />
           <CardTitle className="p-4 flex flex-col gap-2">
             {item.name}
             <br />

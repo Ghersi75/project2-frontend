@@ -53,6 +53,13 @@ export default function Login({
               Login
             </Button>
             <Label className="text-muted-foreground text-center"> Don't have an account? <Link className="text-white hover:underline hover:cursor-pointer" to="/signup"> Sign up </Link> </Label>
+            {/* Taken from examples at https://ui.shadcn.com/blocks/authentication */}
+            <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
+              <span className="relative z-10 bg-background px-2 text-muted-foreground">
+                or continue as a guest
+              </span>
+            </div>
+          <Link to="/"><Button variant="secondary" className="w-full"> Ruturn to Home page </Button></Link>
           </div>
         </form>
       </CardContent>

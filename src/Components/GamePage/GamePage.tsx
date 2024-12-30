@@ -63,9 +63,9 @@ export default function GamePage() {
             <GameMovies movies={gameInfo.movies} />
           }
 
-          <div className="flex justify-between">
-            <GamePriceBadge priceOverview={gameInfo.price_overview} />
-            <Link to={`https://store.steampowered.com/app/${appId}`}>
+          <div className={gameInfo.price_overview ? "flex justify-between" : "grid"}>
+            { gameInfo.price_overview && <GamePriceBadge priceOverview={gameInfo.price_overview} /> }
+            <Link to={`https://store.steampowered.com/app/${appId}`} className={gameInfo.price_overview ? "" : "justify-self-end"}>
               <Button variant="secondary"> View On Steam </Button>
             </Link>
           </div>

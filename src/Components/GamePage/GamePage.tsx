@@ -1,9 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../ui/carousel";
 import { Badge } from "../ui/badge";
 import { GamePageGameInfo } from "@/Types/GameAPIReturnTypes";
+import { Button } from "../ui/button";
 
 export default function GamePage() {
   const { appId } = useParams();
@@ -62,34 +63,40 @@ export default function GamePage() {
           <CarouselNext />
         </Carousel>
 
-        <Carousel className="rounded-xl w-[1000px] hover:cursor-pointer">
-          <CarouselContent>
-            {gameInfo.movies?.map((movie, idx) => {
-              return (
-                <CarouselItem>
-                  <h1 className="p-4 text-lg"> {movie.name} </h1>
-                  <video key={idx} controls>
-                    <source src={movie.mp4.max} type="video/mp4" />
-                    <source src={movie.webm.max} type="video/webm" />
-                  </video>
-                </CarouselItem>
-              )
-            })}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+        {
+          gameInfo.movies &&
+          <Carousel className="rounded-xl w-[1000px] hover:cursor-pointer">
+            <CarouselContent>
+              {gameInfo.movies.map((movie, idx) => {
+                return (
+                  <CarouselItem>
+                    <h1 className="p-4 text-lg"> {movie.name} </h1>
+                    <video key={idx} controls>
+                      <source src={movie.mp4.max} type="video/mp4" />
+                      <source src={movie.webm.max} type="video/webm" />
+                    </video>
+                  </CarouselItem>
+                )
+              })}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        }
 
-        <div className="flex">
+        <div className="flex justify-between">
           <Badge className="text-sm">
             Current Price: {gameInfo.price_overview.final_formatted}
             {gameInfo.price_overview.discount_percent > 0 &&
-            <>
-              <span className="pl-1 text-gray-400 line-through text-xs"> {gameInfo.price_overview.initial_formatted} </span>
-              <span className="pl-1 text-green-600"> {`(-${gameInfo.price_overview.discount_percent}%)`} </span>
-            </>
+              <>
+                <span className="pl-1 text-gray-400 line-through text-xs"> {gameInfo.price_overview.initial_formatted} </span>
+                <span className="pl-1 text-green-600"> {`(-${gameInfo.price_overview.discount_percent}%)`} </span>
+              </>
             }
           </Badge>
+          <Link to={`https://store.steampowered.com/app/${appId}`}>
+            <Button variant="secondary"> View On Steam </Button>
+          </Link>
         </div>
       </div>
     </div>

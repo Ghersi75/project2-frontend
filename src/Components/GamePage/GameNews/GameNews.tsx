@@ -8,6 +8,7 @@ import { GameNewsType } from "@/Types/GameAPIReturnTypes";
 
 export default function GameNews() {
   const [news, setNews] = useState<GameNewsType[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { appId } = useParams();
 
   useEffect(() => {
@@ -19,28 +20,36 @@ export default function GameNews() {
       .then(err => {
         console.error(err)
       })
+      .finally(() => {
+        setIsLoading(false);
+      })
   }, []);
-
-  if (news.length == 0) {
-    return (
-      <Card className="w-fit">
-        <CardHeader>
-          <CardTitle>
-            <Label> No News Found </Label>
-          </CardTitle>
-        </CardHeader>
-      </Card>
-    )
-  }
 
   return (
     <>
       {
-        news.map((item, idx) => {
-          return (
-            <GameNewsCard item={item} key={idx} />
-          )
-        })
+        isLoading ?
+          <Card className="w-fit">
+            <CardHeader>
+              <CardTitle>
+                <Label> Loading... </Label>
+              </CardTitle>
+            </CardHeader>
+          </Card>
+          : news.length == 0 ?
+            <Card className="w-fit">
+              <CardHeader>
+                <CardTitle>
+                  <Label> No News Found </Label>
+                </CardTitle>
+              </CardHeader>
+            </Card>
+            :
+            news.map((item, idx) => {
+              return (
+                <GameNewsCard item={item} key={idx} />
+              )
+            })
       }
     </>
 

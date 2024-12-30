@@ -13,7 +13,7 @@ export interface HomeGameInfoType {
 
 export interface GamePageGameInfo {
   name: string,
-  genres: {
+  genres?: {
     id: number,
     description: string
   }[],
@@ -22,7 +22,7 @@ export interface GamePageGameInfo {
     path_thumbnail: string,
     path_full: string
   }[],
-  movies: {
+  movies?: {
     id: number,
     name: string,
     thumbnail: string,

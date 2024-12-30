@@ -51,9 +51,8 @@ export interface GamePageGameInfo {
 
 export interface GameNewsType {
   title: string,
-  url: string,
-  author: string,
-  contents: string,
   feedlabel: string,
+  url: string,
+  contents: string,
   date: number
 }

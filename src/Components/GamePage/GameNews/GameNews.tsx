@@ -1,12 +1,13 @@
 import { Label } from "@/Components/ui/label";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import GameNewsCard from "../GameNewsCard";
+import GameNewsCard from "./GameNewsCard";
 import { useParams } from "react-router";
 import { Card, CardHeader, CardTitle } from "@/Components/ui/card";
+import { GameNewsType } from "@/Types/GameAPIReturnTypes";
 
 export default function GameNews() {
-  const [news, setNews] = useState<any>([]);
+  const [news, setNews] = useState<GameNewsType[]>([]);
   const { appId } = useParams();
 
   useEffect(() => {

@@ -1,15 +1,16 @@
 import { Button } from "@/Components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { Link } from "react-router";
 // https://github.com/tada5hi/bulletin-board-code
 // Works well enough for this use case
 import { Parser } from 'bulletin-board-code';
-import { Label } from "../ui/label";
+import { Label } from "../../ui/label";
 import { formatTime } from "@/lib/utils";
 import { useTruncatedElement } from "@/Hooks/useTruncatedElement";
+import { GameNewsType } from "@/Types/GameAPIReturnTypes";
 
-export default function GameNewsCard({ item }: any) {
+export default function GameNewsCard({ item }: { item: GameNewsType }) {
   const descriptionRef = useRef(null);
   const { isTruncated, isShowingMore, toggleIsShowingMore } = useTruncatedElement({ ref: descriptionRef });
   const parser = new Parser();

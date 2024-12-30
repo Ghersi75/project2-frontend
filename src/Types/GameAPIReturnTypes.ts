@@ -46,7 +46,7 @@ export interface GamePageGameInfo {
   }[],
   screenshots: GameScreenshotType[],
   movies?: GameMovieType[],
-  price_overview: GamePriceOverviewType
+  price_overview?: GamePriceOverviewType
 }
 
 export interface GameNewsType {

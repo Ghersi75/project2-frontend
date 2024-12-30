@@ -20,7 +20,7 @@ export default function GamePage() {
     // cors anywhere gets rid of annoying cors errors during development
     axios.get(`https://cors-anywhere.herokuapp.com/http://store.steampowered.com/api/appdetails?appids=${appId}`)
       .then(res => {
-        if ( res.data[appId].data.success == false ) {
+        if (res.data[appId].data.success == false) {
           // Return to home page if no game is found with given appId
           navigate("/");
         }
@@ -30,52 +30,68 @@ export default function GamePage() {
       .catch(err => console.error(err))
   }, [])
 
-  if ( gameInfo == undefined) {
-    return ;
+  if (gameInfo == undefined) {
+    return;
   }
 
   return (
-    <div>
-      {gameInfo.name}
-      {gameInfo.genres.map((genre, idx) => {
-        console.log(genre.description)
-        return (
-          <Badge key={idx}>
-            {genre.description}
-          </Badge>
-        )
-      })}
-      <Carousel className="w-full max-w-screen-2xl">
-        <CarouselContent>
-          {gameInfo.screenshots.map((img, idx) => {
+    <div className="grow flex justify-center p-4">
+      <div className="w-[1000px] flex flex-col gap-4">
+        <h1 className="text-2xl"> {gameInfo.name} </h1>
+        <div className="flex gap-2">
+          {gameInfo.genres?.map((genre, idx) => {
+            console.log(genre.description)
             return (
-              <CarouselItem>
-                <img src={img.path_full} key={idx} />
-              </CarouselItem>
+              <Badge variant="secondary" key={idx}>
+                {genre.description}
+              </Badge>
             )
           })}
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
+        </div>
+        <Carousel className="rounded-xl w-[1000px] hover:cursor-pointer">
+          <CarouselContent className="">
+            {gameInfo.screenshots.map((img, idx) => {
+              return (
+                <CarouselItem>
+                  <img src={img.path_full} key={idx} className="rounded-xl aspect-video" />
+                </CarouselItem>
+              )
+            })}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
 
-      <Carousel className="w-full max-w-screen-2xl">
-        <CarouselContent>
-          {gameInfo.movies.map((movie, idx) => {
-            return (
-              <CarouselItem>
-                { movie.name }
-                <video key={idx} controls>
-                  <source src={movie.mp4.max} type="video/mp4"/>
-                  <source src={movie.webm.max} type="video/webm"/>
-                </video>
-              </CarouselItem>
-            )
-          })}
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
+        <Carousel className="rounded-xl w-[1000px] hover:cursor-pointer">
+          <CarouselContent>
+            {gameInfo.movies?.map((movie, idx) => {
+              return (
+                <CarouselItem>
+                  <h1 className="p-4 text-lg"> {movie.name} </h1>
+                  <video key={idx} controls>
+                    <source src={movie.mp4.max} type="video/mp4" />
+                    <source src={movie.webm.max} type="video/webm" />
+                  </video>
+                </CarouselItem>
+              )
+            })}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+
+        <div className="flex">
+          <Badge className="text-sm">
+            Current Price: {gameInfo.price_overview.final_formatted}
+            {gameInfo.price_overview.discount_percent > 0 &&
+            <>
+              <span className="pl-1 text-gray-400 line-through text-xs"> {gameInfo.price_overview.initial_formatted} </span>
+              <span className="pl-1 text-green-600"> {`(-${gameInfo.price_overview.discount_percent}%)`} </span>
+            </>
+            }
+          </Badge>
+        </div>
+      </div>
     </div>
   )
 }

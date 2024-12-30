@@ -11,34 +11,49 @@ export interface HomeGameInfoType {
   linux_available: boolean,
 }
 
+export interface GameScreenshotType {
+  id: number,
+  path_thumbnail: string,
+  path_full: string
+}
+
+export interface GameMovieType {
+  id: number,
+  name: string,
+  thumbnail: string,
+  webm: {
+    480: string,
+    max: string
+  },
+  mp4: {
+    480: string,
+    max: string
+  }
+}
+
+export interface GamePriceOverviewType {
+  currency: string,
+  discount_percent: number,
+  initial_formatted: string,
+  final_formatted: string
+}
+
 export interface GamePageGameInfo {
   name: string,
   genres?: {
     id: number,
     description: string
   }[],
-  screenshots: {
-    id: number,
-    path_thumbnail: string,
-    path_full: string
-  }[],
-  movies?: {
-    id: number,
-    name: string,
-    thumbnail: string,
-    webm: {
-      480: string,
-      max: string
-    },
-    mp4: {
-      480: string,
-      max: string
-    }
-  }[],
-  price_overview: {
-    currency: string,
-    discount_percent: number,
-    initial_formatted: string,
-    final_formatted: string
-  }
+  screenshots: GameScreenshotType[],
+  movies?: GameMovieType[],
+  price_overview: GamePriceOverviewType
+}
+
+export interface GameNewsType {
+  title: string,
+  url: string,
+  author: string,
+  contents: string,
+  feedlabel: string,
+  date: number
 }

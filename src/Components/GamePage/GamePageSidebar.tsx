@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useParams } from "react-router";
 import { Button } from "../ui/button";
 import GameNews from "./GameNews/GameNews";
+import GameThreads from "./GameThreads/GameThreads";
 
 export default function GamePageSidebar() {
   const [pageSelected, setPageSelected] = useState<"news" | "threads">("news");
@@ -13,7 +14,7 @@ export default function GamePageSidebar() {
 
   const handlePageSelectedClick = (page: "news" | "threads") => {
     if (page == pageSelected) {
-      return ;
+      return;
     }
 
     setPageSelected(page);
@@ -26,11 +27,7 @@ export default function GamePageSidebar() {
         <Button variant={pageSelected == "threads" ? "outline" : "ghost"} onClick={() => { handlePageSelectedClick("threads") }} > Threads </Button>
       </div>
       {pageSelected == "news" && <GameNews />}
-      {pageSelected == "threads" &&
-        <>
-          Threads
-        </>
-      }
+      {pageSelected == "threads" && <GameThreads />}
     </div>
   )
 }

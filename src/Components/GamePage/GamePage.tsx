@@ -7,6 +7,7 @@ import { Button } from "../ui/button";
 import GameScreenshots from "./GameScreenshots";
 import GameMovies from "./GameMovies";
 import GamePriceBadge from "./GamePriceBadge";
+import GamePageSidebar from "./GamePageSidebar";
 
 export default function GamePage() {
   const { appId } = useParams();
@@ -38,36 +39,39 @@ export default function GamePage() {
   }
 
   return (
-    <div className="grow flex justify-center p-4 max-h-svh overflow-scroll">
-      <div className="w-[1000px] flex flex-col gap-4">
-        <h1 className="text-2xl"> {gameInfo.name} </h1>
-        <div className="flex gap-2">
-          {gameInfo.genres?.map((genre, idx) => {
-            console.log(genre.description)
-            return (
-              <Badge variant="secondary" key={idx}>
-                {genre.description}
-              </Badge>
-            )
-          })}
-        </div>
-        {
-          gameInfo.screenshots && gameInfo.screenshots.length > 0 &&
-          <GameScreenshots screenshots={gameInfo.screenshots} />
-        }
+    <div className="flex flex-row grow">
+      <div className="grow flex justify-center p-4 max-h-svh overflow-scroll">
+        <div className="w-[1000px] flex flex-col gap-4">
+          <h1 className="text-2xl"> {gameInfo.name} </h1>
+          <div className="flex gap-2">
+            {gameInfo.genres?.map((genre, idx) => {
+              console.log(genre.description)
+              return (
+                <Badge variant="secondary" key={idx}>
+                  {genre.description}
+                </Badge>
+              )
+            })}
+          </div>
+          {
+            gameInfo.screenshots && gameInfo.screenshots.length > 0 &&
+            <GameScreenshots screenshots={gameInfo.screenshots} />
+          }
 
-        {
-          gameInfo.movies && gameInfo.movies.length > 0 &&
-          <GameMovies movies={gameInfo.movies} />
-        }
+          {
+            gameInfo.movies && gameInfo.movies.length > 0 &&
+            <GameMovies movies={gameInfo.movies} />
+          }
 
-        <div className="flex justify-between">
-          <GamePriceBadge priceOverview={gameInfo.price_overview} />
-          <Link to={`https://store.steampowered.com/app/${appId}`}>
-            <Button variant="secondary"> View On Steam </Button>
-          </Link>
+          <div className="flex justify-between">
+            <GamePriceBadge priceOverview={gameInfo.price_overview} />
+            <Link to={`https://store.steampowered.com/app/${appId}`}>
+              <Button variant="secondary"> View On Steam </Button>
+            </Link>
+          </div>
         </div>
       </div>
+      <GamePageSidebar />
     </div>
   )
 }

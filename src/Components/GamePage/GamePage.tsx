@@ -41,7 +41,7 @@ export default function GamePage() {
   return (
     <div className="flex flex-row grow">
       <div className="grow flex justify-center p-4 max-h-svh overflow-scroll">
-        <div className="w-[1000px] flex flex-col gap-4">
+        <div className="max-w-[1000px] flex flex-col gap-4">
           <h1 className="text-2xl"> {gameInfo.name} </h1>
           <div className="flex gap-2">
             {gameInfo.genres?.map((genre, idx) => {

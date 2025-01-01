@@ -3,7 +3,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 
 export default function GameScreenshots({ screenshots }: { screenshots: GameScreenshotType[] }) {
   return (
-    <Carousel className="rounded-xl w-[1000px] hover:cursor-pointer">
+    <Carousel className="rounded-xl max-w-[1000px] hover:cursor-pointer">
       <CarouselContent className="">
         {screenshots.map((img, idx) => {
           return (

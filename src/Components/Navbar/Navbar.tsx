@@ -5,7 +5,7 @@ export default function Navbar() {
   const linkStyle = "hover:pointer-cursor hover:underline"
 
   return (
-    <nav className="w-[300px] h-full bg-secondary sticky top-0 h-svh p-8">
+    <nav className="w-[300px] bg-secondary sticky top-0 h-svh p-8">
       <div className="w-full flex flex-col gap-4">
         <Link to="" className={cn(linkStyle, "text-2xl")}> Home </Link>
         {/* Profile or login/sign up */}

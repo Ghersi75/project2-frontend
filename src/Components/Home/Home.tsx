@@ -92,7 +92,7 @@ export default function Home() {
         }
       </div>
       <h1 className="text-2xl"> Top Sellers </h1>
-      <div className="grid gap-8 grid-cols-3 w-full justify-end">
+      <div className="grid gap-8 2xl:grid-cols-3 grid-cols-2 w-full justify-end">
         {
           topSellers.map((item, idx) => {
             return (
@@ -102,7 +102,7 @@ export default function Home() {
         }
       </div>
       <h1 className="text-2xl"> New Releases </h1>
-      <div className="grid gap-8 grid-cols-3 w-full justify-end">
+      <div className="grid gap-8 2xl:grid-cols-3 grid-cols-2 w-full justify-end">
         {
           newReleases.map((item, idx) => {
             return (
@@ -112,7 +112,7 @@ export default function Home() {
         }
       </div>
       <h1 className="text-2xl"> Coming Soon </h1>
-      <div className="grid gap-8 grid-cols-3 w-full justify-end">
+      <div className="grid gap-8 2xl:grid-cols-3 grid-cols-2 w-full justify-end">
         {
           comingSoon.map((item, idx) => {
             return (

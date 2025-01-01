@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { useParams } from "react-router";
+import { useParams, useSearchParams } from "react-router";
 import { Button } from "../ui/button";
 import GameNews from "./GameNews/GameNews";
 import GameThreads from "./GameThreads/GameThreads";
 
 export default function GamePageSidebar() {
-  const [pageSelected, setPageSelected] = useState<"news" | "threads">("news");
   const { appId } = useParams();
+  const [searchParams] = useSearchParams();
+  const viewThreads = searchParams.get("viewThreads");
+  // Render threads if search parameter is present
+  const [pageSelected, setPageSelected] = useState<"news" | "threads">(viewThreads != null ? "threads" : "news");
 
   if (appId == undefined) {
     return;

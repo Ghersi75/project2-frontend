@@ -1,9 +1,24 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BiDownvote, BiUpvote } from "react-icons/bi";
+import { useSearchParams } from "react-router";
 
 export default function GameThreadCard({ item }: any) {
   const [liked, setLiked] = useState<boolean | null>(null);
+  const [searchParams] = useSearchParams();
+  const ref = useRef<null | HTMLDivElement>(null);
+
+  const threadId = searchParams.get("threadId");
+
+  useEffect(() => {
+    if (ref.current == null) {
+      return ;
+    }
+
+    if (threadId == item.threadId) {
+      ref.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [threadId])
 
   const handleLiked = (clicked: boolean) => {
     // Removing like/dislike
@@ -17,7 +32,7 @@ export default function GameThreadCard({ item }: any) {
   }
 
   return (
-    <Card>
+    <Card ref={ref}>
       <CardHeader>
         <CardTitle>
           {item.displayName}

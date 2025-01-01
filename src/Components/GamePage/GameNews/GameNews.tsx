@@ -14,8 +14,14 @@ export default function GameNews() {
   useEffect(() => {
     axios.get(`https://cors-anywhere.herokuapp.com/https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=${appId}`)
       .then(res => {
-        console.log(res.data.appnews.newsitems)
-        setNews(res.data.appnews.newsitems)
+        setNews(res.data.appnews.newsitems.filter((item: GameNewsType) => {
+          // Filter out russian game magazine articles returned by steam api
+          if ( item.feedlabel.toLocaleLowerCase() == "gamemag.ru") {
+            return ;
+          }
+
+          return item;
+        }))
       })
       .catch(err => {
         console.error(err)

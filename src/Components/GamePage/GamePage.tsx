@@ -28,7 +28,6 @@ export default function GamePage() {
           // Return to home page if no game is found with given appId
           navigate("/");
         }
-        console.log(res)
         setGameInfo(res.data[appId].data)
       })
       .catch(err => console.error(err))
@@ -45,7 +44,6 @@ export default function GamePage() {
           <h1 className="text-2xl"> {gameInfo.name} </h1>
           <div className="flex gap-2">
             {gameInfo.genres?.map((genre, idx) => {
-              console.log(genre.description)
               return (
                 <Badge variant="secondary" key={idx}>
                   {genre.description}

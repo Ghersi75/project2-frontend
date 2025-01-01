@@ -7,9 +7,9 @@ export default function GameMovies({ movies }: { movies: GameMovieType[] }) {
       <CarouselContent>
         {movies.map((movie, idx) => {
           return (
-            <CarouselItem>
+            <CarouselItem key={idx}>
               <h1 className="p-4 text-lg"> {movie.name} </h1>
-              <video key={idx} controls>
+              <video controls>
                 <source src={movie.mp4.max} type="video/mp4" />
                 <source src={movie.webm.max} type="video/webm" />
               </video>

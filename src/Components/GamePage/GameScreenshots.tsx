@@ -7,8 +7,8 @@ export default function GameScreenshots({ screenshots }: { screenshots: GameScre
       <CarouselContent className="">
         {screenshots.map((img, idx) => {
           return (
-            <CarouselItem>
-              <img src={img.path_full} key={idx} className="rounded-xl aspect-video" />
+            <CarouselItem key={idx}>
+              <img src={img.path_full} className="rounded-xl aspect-video" />
             </CarouselItem>
           )
         })}

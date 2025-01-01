@@ -5,13 +5,13 @@ import { BrowserRouter } from "react-router";
 import Login from "./Login";
 
 test("renders all labels, inputs and button", () => {
-  const mockSetEmail = jest.fn();
+  const mockSetUsername = jest.fn();
   const mockSetPassword = jest.fn();
   const mockHandleSubmit = jest.fn();
 
   const props: LoginPropsType = {
-    email: "",
-    setEmail: mockSetEmail,
+    username: "",
+    setUsername: mockSetUsername,
     password: "",
     setPassword: mockSetPassword,
     handleSubmit: mockHandleSubmit
@@ -24,7 +24,7 @@ test("renders all labels, inputs and button", () => {
   )
 
   // Test that the labels show up
-  expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+  expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
   expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
 
   // Test that 1 text inputs load up

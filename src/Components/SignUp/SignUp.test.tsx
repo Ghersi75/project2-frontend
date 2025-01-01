@@ -6,15 +6,12 @@ import { BrowserRouter } from 'react-router';
 
 test("renders all labels, inputs and button", () => {
   const mockSetUsername = jest.fn();
-  const mockSetEmail = jest.fn();
   const mockSetPassword = jest.fn();
   const mockHandleSubmit = jest.fn();
 
   const props: SignUpPropsType = {
     username: "",
     setUsername: mockSetUsername,
-    email: "",
-    setEmail: mockSetEmail,
     password: "",
     setPassword: mockSetPassword,
     handleSubmit: mockHandleSubmit
@@ -28,13 +25,12 @@ test("renders all labels, inputs and button", () => {
 
   // Test that the labels show up
   expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
-  expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
   expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
 
-  // Test that 2 text inputs load up
+  // Test that 1 text input loads up
   // type password doesn't have a role according to issue below
   // https://github.com/testing-library/dom-testing-library/issues/1128
-  expect(screen.getAllByRole("textbox")).toHaveLength(2);
+  expect(screen.getAllByRole("textbox")).toHaveLength(1);
 
   // Test that password input loads up
   expect(screen.getByPlaceholderText(/enter password/i)).toBeInTheDocument();

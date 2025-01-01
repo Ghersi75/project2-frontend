@@ -3,14 +3,14 @@ import Login from "./Login";
 import axios from "axios";
 
 export default function LoginController() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     axios.post(`${import.meta.env.VITE_BACKEND}/login`, {
-      email,
+      username,
       password
     }, {
       headers: {
@@ -25,8 +25,8 @@ export default function LoginController() {
   return (
     <>
       <Login
-        email={email}
-        setEmail={setEmail}
+        username={username}
+        setUsername={setUsername}
         password={password}
         setPassword={setPassword}
         handleSubmit={handleSubmit} />

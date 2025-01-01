@@ -4,7 +4,6 @@ import SignUp from "./SignUp";
 
 export default function SignUpController() {
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -12,7 +11,6 @@ export default function SignUpController() {
 
     axios.post(`${import.meta.env.VITE_BACKEND}/signup`, {
       username,
-      email,
       password
     }, {
       headers: {
@@ -29,8 +27,6 @@ export default function SignUpController() {
       <SignUp 
         username={username}
         setUsername={setUsername}
-        email={email}
-        setEmail={setEmail}
         password={password}
         setPassword={setPassword}
         handleSubmit={handleSubmit} />

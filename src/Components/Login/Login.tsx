@@ -7,8 +7,8 @@ import { useState } from "react";
 import { LoginPropsType } from "@/Types/LoginTypes";
 
 export default function Login({
-  email,
-  setEmail,
+  username,
+  setUsername,
   password,
   setPassword,
   handleSubmit
@@ -20,19 +20,19 @@ export default function Login({
     <Card className="w-[350px]">
       <CardHeader>
         <CardTitle> Login </CardTitle>
-        <CardDescription> Enter your email and password to log in to your account </CardDescription>
+        <CardDescription> Enter your username and password to log in to your account </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
-              <Label htmlFor="email"> Email </Label>
+              <Label htmlFor="username"> Username </Label>
               <Input
-                id="email"
-                type="email"
-                placeholder="example@email.com"
-                value={email}
-                onChange={(e) => { setEmail(e.target.value) }}
+                id="username"
+                type="text"
+                placeholder="username"
+                value={username}
+                onChange={(e) => { setUsername(e.target.value) }}
                 required />
             </div>
             <div className="grid gap-2">

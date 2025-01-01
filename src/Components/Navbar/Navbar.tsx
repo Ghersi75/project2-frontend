@@ -14,7 +14,8 @@ export default function Navbar() {
           <Link to="/signup" className={linkStyle}> Sign Up </Link>
         </div>
         <h1> Profile </h1>
-        <h1> Search </h1>
+        <Link to="/search" className={linkStyle}> Search </Link>
+
 
         {/* Theese 2 are only available if logged in */}
         <h1> Favorited Games </h1>

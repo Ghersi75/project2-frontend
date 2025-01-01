@@ -6,6 +6,7 @@ import GamePage from "./Components/GamePage/GamePage";
 import SignUpController from "./Components/SignUp/SignUpController";
 import LoginController from "./Components/Login/LoginController";
 import MainLayout from "./Components/MainLayout";
+import SearchPage from "./Components/SearchPage/SearchPage";
 
 function App() {
   console.log(import.meta.env.VITE_BACKEND);
@@ -17,6 +18,7 @@ function App() {
           <Route element={<MainLayout />}>
             <Route path="" element={<Home />} />
             <Route path="/:appId" element={<GamePage />} />
+            <Route path="/search" element={<SearchPage />} />
           </Route>
           <Route element={<AuthLayout />}>
             <Route path="/login" element={<LoginController />} />

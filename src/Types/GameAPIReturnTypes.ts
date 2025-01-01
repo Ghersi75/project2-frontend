@@ -56,3 +56,11 @@ export interface GameNewsType {
   contents: string,
   date: number
 }
+
+// https://steamcommunity.com/actions/SearchApps/hollow
+export interface GameSearchType {
+  appid: number,
+  name: string,
+  icon: string,
+  logo: string
+}

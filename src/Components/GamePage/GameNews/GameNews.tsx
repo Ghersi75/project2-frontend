@@ -17,7 +17,7 @@ export default function GameNews() {
         console.log(res.data.appnews.newsitems)
         setNews(res.data.appnews.newsitems)
       })
-      .then(err => {
+      .catch(err => {
         console.error(err)
       })
       .finally(() => {

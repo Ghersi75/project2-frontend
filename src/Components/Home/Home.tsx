@@ -12,7 +12,7 @@ export default function Home() {
   // const [specials, setSpecials] = useState<GameInfoType[]>([]);
 
   useEffect(() => {
-    axios.get(`https://cors-anywhere.herokuapp.com/https://store.steampowered.com/api/featuredcategories/`)
+    axios.get(import.meta.env.VITE_STEAM_FEATURED)
       .then(res => {
         setSpecials(res.data.specials.items);
         setTopSellers(res.data.top_sellers.items);

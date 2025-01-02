@@ -1,9 +1,11 @@
 import useNewsFeedShown from "@/Hooks/useNewsFeedShown";
+import { useUserInfo } from "@/Hooks/useUserInfo";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router";
 
 export default function Navbar() {
   const { newsFeedShown, setNewsFeedShown } = useNewsFeedShown();
+  const { userInfo } = useUserInfo();
   const linkStyle = "hover:pointer-cursor hover:underline"
 
   return (
@@ -20,8 +22,13 @@ export default function Navbar() {
 
 
         {/* Theese 2 are only available if logged in */}
-        <h1> Favorited Games </h1>
-        <h1 className="hover:underline hover:cursor-pointer" onClick={() => { setNewsFeedShown(prev => !prev) }}> { newsFeedShown == true ? "Hide News Feed" : "Show News Feed"} </h1>
+        {
+          userInfo != null &&
+          <>
+            <h1> Favorited Games </h1>
+            <h1 className="hover:underline hover:cursor-pointer" onClick={() => { setNewsFeedShown(prev => !prev) }}> {newsFeedShown == true ? "Hide News Feed" : "Show News Feed"} </h1>
+          </>
+        }
       </div>
     </nav>
   )

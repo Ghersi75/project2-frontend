@@ -8,9 +8,11 @@ import LoginController from "./Components/Login/LoginController";
 import MainLayout from "./Components/MainLayout";
 import SearchPage from "./Components/SearchPage/SearchPage";
 import { NewsFeedShownProvider } from "./Contexts/NewsFeedShownProvider";
+import { useUserInfo } from "./Hooks/useUserInfo";
 
 function App() {
   console.log(import.meta.env.VITE_BACKEND);
+  useUserInfo();
 
   return (
     <BrowserRouter>

@@ -3,7 +3,7 @@ import { useEffect } from "react"
 
 function App() {
   useEffect(() => {
-    axios.get("https://store.steampowered.com/api/featuredcategories/", {
+    axios.get("http://ec2-3-137-66-132.us-east-2.compute.amazonaws.com/steam-api/", {
       headers: {
         "Access-Control-Allow-Origin": "*"
       }

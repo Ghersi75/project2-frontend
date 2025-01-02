@@ -2,7 +2,7 @@ name: Run tests
 
 on:
   push:
-    branches: [login-signup]
+    branches: [main]
 
 jobs:
   build:

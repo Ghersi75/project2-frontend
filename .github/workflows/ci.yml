@@ -6,7 +6,7 @@ name: Docker Image CI
 on:
   workflow_run:
     workflows: ["Run tests"]
-    branches: [login-signup]
+    branches: [main]
     types:
       - completed
 

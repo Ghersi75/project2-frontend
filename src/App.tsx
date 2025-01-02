@@ -7,6 +7,7 @@ import SignUpController from "./Components/SignUp/SignUpController";
 import LoginController from "./Components/Login/LoginController";
 import MainLayout from "./Components/MainLayout";
 import SearchPage from "./Components/SearchPage/SearchPage";
+import { NewsFeedShownProvider } from "./Contexts/NewsFeedShownProvider";
 
 function App() {
   console.log(import.meta.env.VITE_BACKEND);
@@ -14,17 +15,19 @@ function App() {
   return (
     <BrowserRouter>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-        <Routes>
-          <Route element={<MainLayout />}>
-            <Route path="" element={<Home />} />
-            <Route path="/:appId" element={<GamePage />} />
-            <Route path="/search" element={<SearchPage />} />
-          </Route>
-          <Route element={<AuthLayout />}>
-            <Route path="/login" element={<LoginController />} />
-            <Route path="/signup" element={<SignUpController />} />
-          </Route>
-        </Routes>
+        <NewsFeedShownProvider>
+          <Routes>
+            <Route element={<MainLayout />}>
+              <Route path="" element={<Home />} />
+              <Route path="/:appId" element={<GamePage />} />
+              <Route path="/search" element={<SearchPage />} />
+            </Route>
+            <Route element={<AuthLayout />}>
+              <Route path="/login" element={<LoginController />} />
+              <Route path="/signup" element={<SignUpController />} />
+            </Route>
+          </Routes>
+        </NewsFeedShownProvider>
       </ThemeProvider>
     </BrowserRouter>
   )

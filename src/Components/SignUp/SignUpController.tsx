@@ -6,9 +6,11 @@ export default function SignUpController() {
   const [username, setUsername] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("error");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError("");
 
     axios.post(`${import.meta.env.VITE_BACKEND}/user/register`, {
       username,
@@ -21,10 +23,16 @@ export default function SignUpController() {
       }
     })
       .then(res => console.log(res))
-      .catch(err => console.log(err));
+      .catch(err => {
+        if (err?.data?.error) {
+          setError(err?.data?.error);
+        } else if (err?.message) {
+          setError(err?.message);
+        }
+      });
   }
 
-  return(
+  return (
     <>
       <SignUp
         username={username}
@@ -33,7 +41,8 @@ export default function SignUpController() {
         setDisplayName={setDisplayName}
         password={password}
         setPassword={setPassword}
-        handleSubmit={handleSubmit} />
+        handleSubmit={handleSubmit}
+        error={error} />
     </>
   )
 }

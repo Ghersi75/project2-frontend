@@ -17,7 +17,8 @@ test("renders all labels, inputs and button", () => {
     setDisplayName: mockSetDisplayName,
     password: "",
     setPassword: mockSetPassword,
-    handleSubmit: mockHandleSubmit
+    handleSubmit: mockHandleSubmit,
+    error: "error"
   }
 
   render(
@@ -41,4 +42,7 @@ test("renders all labels, inputs and button", () => {
 
   // Test the button loads up
   expect(screen.getByRole("button", { name: /sign up/i })).toBeInTheDocument();
+
+  // Check that error renders properly
+  expect(screen.getByText(new RegExp(`error: ${props.error}`, "i"))).toBeInTheDocument();
 });

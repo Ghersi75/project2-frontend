@@ -13,7 +13,8 @@ export default function SignUp({
   setDisplayName,
   password,
   setPassword,
-  handleSubmit
+  handleSubmit,
+  error
 }: SignUpPropsType) {
   const [showingPassword, setShowingPassword] = useState(false);
 
@@ -63,6 +64,7 @@ export default function SignUp({
             <Button type="submit" className="w-full">
               Sign Up
             </Button>
+            { error != "" && <Label className="text-destructive text-center"> Error: {error} </Label>}
             <Label className="text-muted-foreground text-center"> Alright have an account? <Link className="text-white hover:underline hover:cursor-pointer" to="/login"> Login </Link> </Label>
             {/* Taken from examples at https://ui.shadcn.com/blocks/authentication */}
             <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">

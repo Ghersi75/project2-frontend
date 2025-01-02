@@ -6,9 +6,9 @@ import { useGameSearch } from "@/Hooks/useGameSearch";
 
 export default function SearchPage() {
   const [search, setSearch] = useState("");
-  const result = useGameSearch(search, 500);
+  const { searching, gamesFound } = useGameSearch(search, 500);
 
-  console.log(result)
+  console.log(gamesFound)
 
   return (
     <div className="grow flex justify-center items-start p-8">
@@ -18,16 +18,22 @@ export default function SearchPage() {
           placeholder="Enter game name"
           className=""
           value={search}
-          onChange={(e) => { setSearch(e.target.value) }}/>
+          onChange={(e) => { setSearch(e.target.value) }} />
         <div className="flex flex-col gap-2">
           {
-            result.map((gameInfo, idx) => {
-              return (
-                <FoundGameCard gameInfo={gameInfo} key={idx}/>
-              )
-            })
+            searching == true ?
+              <h1> Searching... </h1>
+              : searching == null && gamesFound.length == 0 ?
+                // Empty search bar
+                null
+                : !searching && gamesFound.length == 0 ?
+                  <h1>Nothing found</h1>
+                  : gamesFound.length > 0 && gamesFound.map((gameInfo, idx) => {
+                    return (
+                      <FoundGameCard gameInfo={gameInfo} key={idx} />
+                    )
+                  })
           }
-
         </div>
       </div>
     </div>

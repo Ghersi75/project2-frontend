@@ -11,14 +11,13 @@ export default function LoginController() {
     e.preventDefault();
     setError("")
 
-    axios.post(`${import.meta.env.VITE_BACKEND}/login`, {
+    axios.post(`${import.meta.env.VITE_BACKEND}/user/login`, {
       username,
       password
     }, {
       headers: {
         "Content-Type": "application/json",
       },
-      withCredentials: true
     })
       .then(res => console.log(res))
       .catch(err => {

@@ -5,9 +5,11 @@ import axios from "axios";
 export default function LoginController() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("asd");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError("")
 
     axios.post(`${import.meta.env.VITE_BACKEND}/login`, {
       username,
@@ -19,7 +21,13 @@ export default function LoginController() {
       withCredentials: true
     })
       .then(res => console.log(res))
-      .catch(err => console.log(err));
+      .catch(err => {
+        if (err?.data?.error) {
+          setError(err?.data?.error);
+        } else if (err?.message) {
+          setError(err?.message);
+        }
+      });
   }
 
   return (
@@ -29,7 +37,8 @@ export default function LoginController() {
         setUsername={setUsername}
         password={password}
         setPassword={setPassword}
-        handleSubmit={handleSubmit} />
+        handleSubmit={handleSubmit}
+        error={error} />
     </>
   )
 }

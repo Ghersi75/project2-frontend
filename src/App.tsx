@@ -1,16 +1,18 @@
-import axios from "axios"
-import { useEffect } from "react"
+import { BrowserRouter, Route, Routes } from "react-router";
+import SignUpController from "./Components/SignUp/SignUpController";
+import LoginController from "./Components/Login/LoginController";
+import AuthLayout from "./Components/AuthLayout";
 
 function App() {
-  useEffect(() => {
-    axios.get("http://ec2-3-137-66-132.us-east-2.compute.amazonaws.com/steam-api/")
-    .then(res => console.log(res));
-  }, [])
-
   return (
-    <h1 className="bg-zinc-900 text-white h-screen w-screen flex justify-center items-center text-xl">
-      Welcome to this somewhat beautiful site
-    </h1>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<AuthLayout />}>
+          <Route path="/login" element={<LoginController />} />
+          <Route path="/signup" element={<SignUpController />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 

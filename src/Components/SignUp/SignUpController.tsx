@@ -4,19 +4,21 @@ import SignUp from "./SignUp";
 
 export default function SignUpController() {
   const [username, setUsername] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    axios.post(`${import.meta.env.VITE_BACKEND}/signup`, {
+    axios.post(`${import.meta.env.VITE_BACKEND}/user/register`, {
       username,
-      password
+      displayName,
+      password,
+      role: "CONTRIBUTOR"
     }, {
       headers: {
         "Content-Type": "application/json",
-      },
-      withCredentials: true
+      }
     })
       .then(res => console.log(res))
       .catch(err => console.log(err));
@@ -24,9 +26,11 @@ export default function SignUpController() {
 
   return(
     <>
-      <SignUp 
+      <SignUp
         username={username}
         setUsername={setUsername}
+        displayName={displayName}
+        setDisplayName={setDisplayName}
         password={password}
         setPassword={setPassword}
         handleSubmit={handleSubmit} />

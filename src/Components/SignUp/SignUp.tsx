@@ -9,6 +9,8 @@ import { SignUpPropsType } from "@/Types/SignUpTypes";
 export default function SignUp({
   username,
   setUsername,
+  displayName,
+  setDisplayName,
   password,
   setPassword,
   handleSubmit
@@ -19,7 +21,7 @@ export default function SignUp({
     <Card className="w-[350px]">
       <CardHeader>
         <CardTitle> Sign up </CardTitle>
-        <CardDescription> Enter desired username and password to sign up </CardDescription>
+        <CardDescription> Enter desired username, display name and password to sign up </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit}>
@@ -32,6 +34,16 @@ export default function SignUp({
                 placeholder="username"
                 value={username}
                 onChange={(e) => { setUsername(e.target.value) }}
+                required />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="displayName"> Display Name </Label>
+              <Input
+                id="displayName"
+                type="text"
+                placeholder="display name"
+                value={displayName}
+                onChange={(e) => { setDisplayName(e.target.value) }}
                 required />
             </div>
             <div className="grid gap-2">
@@ -58,7 +70,7 @@ export default function SignUp({
                 or continue as a guest
               </span>
             </div>
-          <Link to="/"><Button variant="secondary" className="w-full"> Ruturn to Home page </Button></Link>
+            <Link to="/"><Button variant="secondary" className="w-full"> Ruturn to Home page </Button></Link>
           </div>
         </form>
       </CardContent>

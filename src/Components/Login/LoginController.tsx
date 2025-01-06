@@ -18,6 +18,7 @@ export default function LoginController() {
       headers: {
         "Content-Type": "application/json",
       },
+      withCredentials: true
     })
       .then(res => console.log(res))
       .catch(err => {

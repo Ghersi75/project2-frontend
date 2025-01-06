@@ -20,7 +20,8 @@ export default function SignUpController() {
     }, {
       headers: {
         "Content-Type": "application/json",
-      }
+      },
+      withCredentials: true
     })
       .then(res => console.log(res))
       .catch(err => {

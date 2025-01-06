@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react"
 import SignUp from "./SignUp";
+import RedirectIfLoggedIn from "../RouteGuards/RedirectIfLoggedIn";
 
 export default function SignUpController() {
   const [username, setUsername] = useState("");
@@ -34,7 +35,7 @@ export default function SignUpController() {
   }
 
   return (
-    <>
+    <RedirectIfLoggedIn>
       <SignUp
         username={username}
         setUsername={setUsername}
@@ -44,6 +45,6 @@ export default function SignUpController() {
         setPassword={setPassword}
         handleSubmit={handleSubmit}
         error={error} />
-    </>
+    </RedirectIfLoggedIn>
   )
 }

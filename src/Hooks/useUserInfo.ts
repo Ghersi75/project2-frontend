@@ -1,19 +1,11 @@
-import { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
-import { jwtDecode } from "jwt-decode";
+import { UserContext } from "@/Contexts/UserContext";
+import { useContext } from "react";
 
 export const useUserInfo = () => {
-  // Token needs to be set as http only false
-  const [cookies] = useCookies(["token"]);
-  const [userInfo, setUserInfo] = useState<any>(null);
+  const content = useContext(UserContext);
+  if (!content) {
+    throw new Error("UserContext must be placed within a UserProvider component")
+  }
 
-  useEffect(() => {
-    if (cookies.token == null) {
-      return;
-    }
-
-    setUserInfo(jwtDecode(cookies.token))
-  }, [cookies.token]);
-
-  return { userInfo }
+  return { ...content };
 }

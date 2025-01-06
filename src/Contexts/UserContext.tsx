@@ -15,6 +15,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (cookies.token == null) {
+      setUserInfo(null);
       return;
     }
 

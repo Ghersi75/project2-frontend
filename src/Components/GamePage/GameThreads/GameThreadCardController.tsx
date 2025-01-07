@@ -4,6 +4,7 @@ import { GameThreadType } from "@/Types/GameAPIReturnTypes";
 import axios from "axios";
 import { useState } from "react";
 import GameThreadCard from "./GameThreadCard";
+import { format } from "date-fns";
 
 export default function GameThreadCardController({
   item,
@@ -22,6 +23,7 @@ export default function GameThreadCardController({
   const [content, setContent] = useState(item.content);
 
   const canInteract = userInfo != null && userInfo.username != item.username
+  const canEdit = userInfo != null && userInfo.username == item.username;
 
   const handleInteraction = (like: boolean) => {
     if (userInfo == null) {
@@ -53,19 +55,32 @@ export default function GameThreadCardController({
       })
   }
 
+  const handleUpdateReview = () => {
+    const body = {
+      content: content
+    }
+    axios.put(`${import.meta.env.VITE_BACKEND}/reviews/${userInfo?.username}/${item.reviewId}`, body, defaultOptions)
+      .catch(err => {
+        console.error(err)
+      })
+  }
+
   return (
     <>
       <GameThreadCard
         canInteract={canInteract}
+        canEdit={canEdit}
         handleInteraction={handleInteraction}
         liked={liked}
         reviewId={item.reviewId}
         displayName={item.displayName}
         username={item.username}
         content={content}
+        setContent={setContent}
+        handleUpdateReview={handleUpdateReview}
         likes={item.likes}
         dislikes={item.dislikes}
-        postedAt={item.postedAt?.toString() || ""}
+        postedAt={item.postedAt ? format(item.postedAt, "hh:mm aaa - MMM dd yyyy") : ""}
       />
     </>
   )

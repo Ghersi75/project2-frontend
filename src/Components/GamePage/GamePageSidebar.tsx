@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, useSearchParams } from "react-router";
+import { useParams } from "react-router";
 import { Button } from "../ui/button";
 import GameNews from "./GameNews/GameNews";
 import GameThreads from "./GameThreads/GameThreads";

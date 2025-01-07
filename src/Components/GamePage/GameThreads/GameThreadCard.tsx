@@ -79,7 +79,7 @@ export default function GameThreadCard({
           @{username}
         </CardDescription>
       </CardHeader>
-      <CardContent className="grid w-full overflow-hidden break-all whitespace-normal">
+      <CardContent className="grid w-full overflow-hidden break-all whitespace-normal break-anywhere">
         {
           editing ?
             // Shadcn Input being a pain so html input without styles was easier to change

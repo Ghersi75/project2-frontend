@@ -1,12 +1,62 @@
 import { Button } from "@/Components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Input } from "@/Components/ui/input";
-import { useState } from "react";
-import { testData } from "./testData";
-import GameThreadCard from "./GameThreadCard";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router";
+import { useCookies } from "react-cookie";
+import { useUserInfo } from "@/Hooks/useUserInfo";
+import { GameThreadType } from "@/Types/GameAPIReturnTypes";
+import GameThreadCardController from "./GameThreadCardController";
 
 export default function GameThreads() {
   const [reviewText, setReviewText] = useState("")
+  const [cookies] = useCookies(["token"]);
+  const { appId } = useParams();
+  const { userInfo } = useUserInfo();
+  const [data, setData] = useState<GameThreadType[]>([]);
+
+  useEffect(() => {
+    axios.get(`${import.meta.env.VITE_BACKEND}/reviews/games/${appId}`, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${cookies.token}`,
+      },
+      withCredentials: true
+    })
+      .then(res => {
+        setData(res.data)
+      })
+      .catch(err => {
+        console.error(err);
+      })
+  }, [])
+
+  
+
+  const handleSubmit = () => {
+    const body = {
+      content: reviewText,
+      appid: appId
+    }
+
+    console.log(body)
+
+    axios.post(`${import.meta.env.VITE_BACKEND}/reviews/${userInfo?.username}`, body, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${cookies.token}`,
+      },
+      withCredentials: true
+    })
+      .then(res => {
+        setData(prev => [res.data, ...prev])
+        setReviewText("")
+      })
+      .catch(err => {
+        console.error(err);
+      })
+  }
 
   return (
     <>
@@ -25,15 +75,15 @@ export default function GameThreads() {
           />
         </CardContent>
         <CardFooter className="grid">
-          <Button variant="outline" className="w-fit justify-self-end">
+          <Button variant="outline" disabled={reviewText == ""} className="w-fit justify-self-end" onClick={handleSubmit}>
             Submit
           </Button>
         </CardFooter>
       </Card>
       {
-        testData.map((data, idx) => {
+        data.map((data, idx) => {
           return (
-            <GameThreadCard item={data} key={idx} />
+            <GameThreadCardController item={data} setData={setData} key={idx} />
           )
         })
       }

@@ -28,14 +28,18 @@ export default function GamePageSidebar() {
 
     if (page == "news") {
       if (viewThreads != null) {
-        setSearchParams();
+        setSearchParams(prev => {
+          prev.delete("viewThreads")
+          return prev
+        })
       }
     }
 
     if (page == "threads") {
       if (viewThreads == null) {
-        setSearchParams({
-          viewThreads: ""
+        setSearchParams(prev => {
+          prev.set("viewThreads", "")
+          return prev
         })
       }
     }

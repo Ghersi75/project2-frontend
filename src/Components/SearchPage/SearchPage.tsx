@@ -3,9 +3,11 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import FoundGameCard from "./FoundGameCard";
 import { useGameSearch } from "@/Hooks/useGameSearch";
+import { useSaveGameSearch } from "@/Hooks/useSaveGameSearch";
 
 export default function SearchPage() {
-  const [search, setSearch] = useState("");
+  const { searchParam } = useSaveGameSearch();
+  const [search, setSearch] = useState(searchParam);
   const { searching, gamesFound } = useGameSearch(search, 500);
 
   console.log(gamesFound)

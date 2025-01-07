@@ -21,11 +21,12 @@ export default function GameThreadCard({
   dislikes,
   postedAt,
 }: GameThreadCardProps) {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const ref = useRef<null | HTMLDivElement>(null);
   const textAreaRef = useRef<null | HTMLTextAreaElement>(null);
   const [editing, setEditing] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [highlight, setHighlight] = useState(false);
 
   let cantInteractStyle = "hover:fill-muted";
   let likedStyle = "";
@@ -54,12 +55,22 @@ export default function GameThreadCard({
 
     if (threadId == reviewId.toString()) {
       ref.current.scrollIntoView({ behavior: "smooth" });
+      setHighlight(true);
     }
-  }, [threadId])
+  }, [])
+
+  // If user interacts with a review, keep track of it so if page is refreshed it goes to it
+  // https://stackoverflow.com/a/74892042
+  const updateThreadId = () => {
+    setSearchParams(prev => {
+      prev.set("threadId", reviewId.toString())
+      return prev
+    });
+  }
 
   return (
     // Highlight last interacted with or thread linked to
-    <Card ref={ref} className="animate-highlight">
+    <Card ref={ref} className={highlight ? "animate-highlight" : ""}>
       <CardHeader>
         <CardTitle>
           {displayName}
@@ -92,10 +103,12 @@ export default function GameThreadCard({
             variant="ghost"
             className="text-xs text-muted-foreground justify-self-end w-fit h-fit p-0 hover:underline hover:bg-transparent"
             onClick={editing ? () => {
+              updateThreadId();
               // Confirm
               handleUpdateReview()
               setEditing(prev => !prev)
             } : () => {
+              updateThreadId();
               // Edit
               setEditing(prev => !prev)
             }}>
@@ -107,10 +120,16 @@ export default function GameThreadCard({
       <CardFooter className="flex flex-col gap-1 justify-start items-start">
         <div className="flex flex-row gap-2">
           <div className="flex flex-row justify-center items-center gap-1">
-            <BiUpvote className={canInteract ? likedStyle : cantInteractStyle} onClick={!canInteract ? undefined : () => handleInteraction(true)} /> {likes}
+            <BiUpvote className={canInteract ? likedStyle : cantInteractStyle} onClick={!canInteract ? undefined : () => {
+              updateThreadId();
+              handleInteraction(true)
+            }} /> {likes}
           </div>
           <div className="flex flex-row justify-center items-center gap-1">
-            <BiDownvote className={canInteract ? dislikedStyle : cantInteractStyle} onClick={!canInteract ? undefined : () => handleInteraction(false)} /> {dislikes}
+            <BiDownvote className={canInteract ? dislikedStyle : cantInteractStyle} onClick={!canInteract ? undefined : () => {
+              updateThreadId();
+              handleInteraction(false)
+            }} /> {dislikes}
           </div>
         </div>
         <div className={`${postedAt != "" ? "flex flex-row justify-between w-full items-center" : "grid"}`}>
@@ -122,7 +141,10 @@ export default function GameThreadCard({
             canDelete ?
               deleting ?
                 <div className="flex gap-2">
-                  <Button variant="ghost" className="text-xs text-muted-foreground hover:underline p-0 hover:bg-transparent" onClick={() => setDeleting(prev => !prev)}>
+                  <Button variant="ghost" className="text-xs text-muted-foreground hover:underline p-0 hover:bg-transparent" onClick={() => {
+                    updateThreadId();
+                    setDeleting(prev => !prev)
+                  }}>
                     cancel
                   </Button>
                   <Button variant="ghost" className="text-xs text-destructive hover:underline p-0 hover:bg-transparent" onClick={() => setDeleting(prev => !prev)}>
@@ -130,7 +152,10 @@ export default function GameThreadCard({
                   </Button>
                 </div>
                 :
-                <Button variant="ghost" className="text-xs text-destructive hover:underline p-0 hover:bg-transparent" onClick={() => setDeleting(prev => !prev)}>
+                <Button variant="ghost" className="text-xs text-destructive hover:underline p-0 hover:bg-transparent" onClick={() => {
+                  updateThreadId();
+                  setDeleting(prev => !prev)
+                }}>
                   delete
                 </Button>
               :

@@ -32,8 +32,6 @@ export default function GameThreads() {
       })
   }, [])
 
-  
-
   const handleSubmit = () => {
     const body = {
       content: reviewText,
@@ -81,9 +79,9 @@ export default function GameThreads() {
         </CardFooter>
       </Card>
       {
-        data.map((data, idx) => {
+        data.map(data => {
           return (
-            <GameThreadCardController item={data} setData={setData} key={idx} />
+            <GameThreadCardController item={data} setData={setData} key={data.reviewId} />
           )
         })
       }

@@ -66,6 +66,20 @@ export default function GameThreadCardController({
       })
   }
 
+  const handleDeleteReview = () => {
+    axios.delete(`${import.meta.env.VITE_BACKEND}/reviews/${userInfo?.username}/${item.reviewId}`, defaultOptions)
+      .then((_) => {
+        setData(prev =>
+          prev.filter(review =>
+            review.reviewId != item.reviewId && review
+          )
+        )
+      })
+      .catch(err => {
+        console.error(err)
+      })
+  }
+
   return (
     <>
       <GameThreadCard
@@ -80,6 +94,7 @@ export default function GameThreadCardController({
         content={content}
         setContent={setContent}
         handleUpdateReview={handleUpdateReview}
+        handleDeleteReview={handleDeleteReview}
         likes={item.likes}
         dislikes={item.dislikes}
         postedAt={item.postedAt ? format(item.postedAt, "hh:mm aaa - MMM dd yyyy") : ""}

@@ -17,6 +17,7 @@ export default function GameThreadCard({
   content,
   setContent,
   handleUpdateReview,
+  handleDeleteReview,
   likes,
   dislikes,
   postedAt,
@@ -64,6 +65,13 @@ export default function GameThreadCard({
   const updateThreadId = () => {
     setSearchParams(prev => {
       prev.set("threadId", reviewId.toString())
+      return prev
+    });
+  }
+
+  const clearThreadId = () => {
+    setSearchParams(prev => {
+      prev.delete("threadId", reviewId.toString())
       return prev
     });
   }
@@ -147,7 +155,10 @@ export default function GameThreadCard({
                   }}>
                     cancel
                   </Button>
-                  <Button variant="ghost" className="text-xs text-destructive hover:underline p-0 hover:bg-transparent" onClick={() => setDeleting(prev => !prev)}>
+                  <Button variant="ghost" className="text-xs text-destructive hover:underline p-0 hover:bg-transparent" onClick={() => {
+                    handleDeleteReview();
+                    clearThreadId();
+                  }}>
                     confirm
                   </Button>
                 </div>

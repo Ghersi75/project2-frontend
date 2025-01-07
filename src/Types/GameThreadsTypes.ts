@@ -10,6 +10,7 @@ export interface GameThreadCardProps {
   content: string,
   setContent: React.Dispatch<React.SetStateAction<string>>,
   handleUpdateReview: () => void,
+  handleDeleteReview: () => void,
   likes: number,
   dislikes: number,
   postedAt: string,

@@ -4,6 +4,7 @@ import { BiDownvote, BiUpvote } from "react-icons/bi";
 import { useSearchParams } from "react-router";
 import { GameThreadCardProps } from "@/Types/GameThreadsTypes";
 import { Button } from "@/Components/ui/button";
+import { useIsVisible } from "@/Hooks/useIsVisible";
 
 export default function GameThreadCard({
   canInteract,
@@ -23,11 +24,13 @@ export default function GameThreadCard({
   postedAt,
 }: GameThreadCardProps) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const ref = useRef<null | HTMLDivElement>(null);
+  const threadScrollRef = useRef<null | HTMLDivElement>(null);
   const textAreaRef = useRef<null | HTMLTextAreaElement>(null);
   const [editing, setEditing] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [highlight, setHighlight] = useState(false);
+  const isVisible = useIsVisible(threadScrollRef);
+
 
   let cantInteractStyle = "hover:fill-muted";
   let likedStyle = "";
@@ -50,15 +53,20 @@ export default function GameThreadCard({
   }, [editing, content])
 
   useEffect(() => {
-    if (ref.current == null) {
+    if (threadScrollRef.current == null) {
       return;
     }
 
     if (threadId == reviewId.toString()) {
-      ref.current.scrollIntoView({ behavior: "smooth" });
-      setHighlight(true);
+      threadScrollRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [])
+
+  useEffect(() => {
+    if (isVisible && threadId == reviewId.toString()) {
+      setHighlight(true);
+    }
+  }, [isVisible])
 
   // If user interacts with a review, keep track of it so if page is refreshed it goes to it
   // https://stackoverflow.com/a/74892042
@@ -78,7 +86,7 @@ export default function GameThreadCard({
 
   return (
     // Highlight last interacted with or thread linked to
-    <Card ref={ref} className={highlight ? "animate-highlight" : ""}>
+    <Card ref={threadScrollRef} className={highlight ? "animate-highlight" : ""}>
       <CardHeader>
         <CardTitle>
           {displayName}

@@ -64,3 +64,15 @@ export interface GameSearchType {
   icon: string,
   logo: string
 }
+
+export interface GameThreadType {
+  reviewId: number,
+  displayName: string,
+  username: string,
+  content: string,
+  likes: number,
+  dislikes: number,
+  postedAt: Date | null,
+  likedByUser: boolean,
+  dislikedByUser: boolean
+}

@@ -4,13 +4,13 @@ import { Button } from "../ui/button";
 import GameNews from "./GameNews/GameNews";
 import GameThreads from "./GameThreads/GameThreads";
 import useNewsFeedShown from "@/Hooks/useNewsFeedShown";
+import { useViewThreads } from "@/Hooks/useViewThreads";
 
 export default function GamePageSidebar() {
   const { appId } = useParams();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const viewThreads = searchParams.get("viewThreads");
+  const { viewThreads, setViewThreads } = useViewThreads();
   // Render threads if search parameter is present
-  const [pageSelected, setPageSelected] = useState<"news" | "threads">(viewThreads != null ? "threads" : "news");
+  const [pageSelected, setPageSelected] = useState<"news" | "threads">(viewThreads ? "threads" : "news");
   const { newsFeedShown } = useNewsFeedShown();
 
   if (appId == undefined) {
@@ -27,21 +27,11 @@ export default function GamePageSidebar() {
     }
 
     if (page == "news") {
-      if (viewThreads != null) {
-        setSearchParams(prev => {
-          prev.delete("viewThreads")
-          return prev
-        })
-      }
+      setViewThreads(false)
     }
 
     if (page == "threads") {
-      if (viewThreads == null) {
-        setSearchParams(prev => {
-          prev.set("viewThreads", "")
-          return prev
-        })
-      }
+      setViewThreads(true)
     }
     setPageSelected(page);
   }

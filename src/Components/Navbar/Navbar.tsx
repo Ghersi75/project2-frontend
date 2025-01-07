@@ -1,13 +1,16 @@
 import useNewsFeedShown from "@/Hooks/useNewsFeedShown";
 import { useUserInfo } from "@/Hooks/useUserInfo";
 import { cn } from "@/lib/utils";
-import { Link } from "react-router";
+import { Link, useParams, useSearchParams } from "react-router";
 import { Button } from "../ui/button";
 
 export default function Navbar() {
   const { newsFeedShown, setNewsFeedShown } = useNewsFeedShown();
   const { userInfo, logout } = useUserInfo();
+  const { appId } = useParams();
+  const [params] = useSearchParams();
   const linkStyle = "hover:pointer-cursor hover:underline"
+  const urlAdditions = `?${appId != null ? `appId=${appId}` : ""}&${params.toString()}`
 
   return (
     <nav className="w-[300px] bg-secondary sticky top-0 h-svh p-8">
@@ -17,8 +20,8 @@ export default function Navbar() {
         {
           userInfo == null &&
           <div className="flex gap-8">
-            <Link to="/login" className={linkStyle}> Login </Link>
-            <Link to="/signup" className={linkStyle}> Sign Up </Link>
+            <Link to={`/login${urlAdditions}`} className={linkStyle}> Login </Link>
+            <Link to={`/signup${urlAdditions}`} className={linkStyle}> Sign Up </Link>
           </div>
         }
         <h1> {userInfo ? `${userInfo.username} ${userInfo.displayName}` : "Profile"} </h1>

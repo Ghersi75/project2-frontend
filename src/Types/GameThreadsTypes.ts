@@ -1,6 +1,7 @@
 export interface GameThreadCardProps {
   canInteract: boolean,
   canEdit: boolean,
+  canDelete: boolean,
   handleInteraction: (like: boolean) => void
   liked: boolean | null,
   reviewId: number,

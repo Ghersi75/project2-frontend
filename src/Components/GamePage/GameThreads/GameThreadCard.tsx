@@ -8,6 +8,7 @@ import { Button } from "@/Components/ui/button";
 export default function GameThreadCard({
   canInteract,
   canEdit,
+  canDelete,
   handleInteraction,
   liked,
   reviewId,
@@ -24,6 +25,7 @@ export default function GameThreadCard({
   const ref = useRef<null | HTMLDivElement>(null);
   const textAreaRef = useRef<null | HTMLTextAreaElement>(null);
   const [editing, setEditing] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   let cantInteractStyle = "hover:fill-muted";
   let likedStyle = "";
@@ -56,7 +58,8 @@ export default function GameThreadCard({
   }, [threadId])
 
   return (
-    <Card ref={ref}>
+    // Highlight last interacted with or thread linked to
+    <Card ref={ref} className="animate-highlight">
       <CardHeader>
         <CardTitle>
           {displayName}
@@ -87,7 +90,7 @@ export default function GameThreadCard({
           <Button
             disabled={editing && (content == "" || content.length > 500)}
             variant="ghost"
-            className="text-xs text-muted-foreground text-end p-0 justify-self-end hover:underline hover:bg-transparent"
+            className="text-xs text-muted-foreground justify-self-end w-fit h-fit p-0 hover:underline hover:bg-transparent"
             onClick={editing ? () => {
               // Confirm
               handleUpdateReview()
@@ -99,6 +102,7 @@ export default function GameThreadCard({
             {editing ? "confirm" : "edit"}
           </Button>
         }
+
       </CardContent>
       <CardFooter className="flex flex-col gap-1 justify-start items-start">
         <div className="flex flex-row gap-2">
@@ -109,10 +113,30 @@ export default function GameThreadCard({
             <BiDownvote className={canInteract ? dislikedStyle : cantInteractStyle} onClick={!canInteract ? undefined : () => handleInteraction(false)} /> {dislikes}
           </div>
         </div>
-        {
-          postedAt != "" &&
-          <h1 className="text-xs text-muted-foreground"> {postedAt} </h1>
-        }
+        <div className={`${postedAt != "" ? "flex flex-row justify-between w-full items-center" : "grid"}`}>
+          {
+            postedAt != "" &&
+            <h1 className="text-xs text-muted-foreground"> {postedAt} </h1>
+          }
+          {
+            canDelete ?
+              deleting ?
+                <div className="flex gap-2">
+                  <Button variant="ghost" className="text-xs text-muted-foreground hover:underline p-0 hover:bg-transparent" onClick={() => setDeleting(prev => !prev)}>
+                    cancel
+                  </Button>
+                  <Button variant="ghost" className="text-xs text-destructive hover:underline p-0 hover:bg-transparent" onClick={() => setDeleting(prev => !prev)}>
+                    confirm
+                  </Button>
+                </div>
+                :
+                <Button variant="ghost" className="text-xs text-destructive hover:underline p-0 hover:bg-transparent" onClick={() => setDeleting(prev => !prev)}>
+                  delete
+                </Button>
+              :
+              null
+          }
+        </div>
       </CardFooter>
     </Card>
   )

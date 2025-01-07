@@ -24,6 +24,7 @@ export default function GameThreadCardController({
 
   const canInteract = userInfo != null && userInfo.username != item.username
   const canEdit = userInfo != null && userInfo.username == item.username;
+  const canDelete = userInfo != null && (userInfo.username == item.username || userInfo.userRole == "MODERATOR");
 
   const handleInteraction = (like: boolean) => {
     if (userInfo == null) {
@@ -70,6 +71,7 @@ export default function GameThreadCardController({
       <GameThreadCard
         canInteract={canInteract}
         canEdit={canEdit}
+        canDelete={canDelete}
         handleInteraction={handleInteraction}
         liked={liked}
         reviewId={item.reviewId}

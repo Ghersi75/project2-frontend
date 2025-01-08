@@ -1,16 +1,17 @@
 import useNewsFeedShown from "@/Hooks/useNewsFeedShown";
 import { useUserInfo } from "@/Hooks/useUserInfo";
 import { cn } from "@/lib/utils";
-import { Link, useParams, useSearchParams } from "react-router";
+import { Link, useParams } from "react-router";
 import { Button } from "../ui/button";
+import { useCustomSearchParams } from "@/Hooks/useCustomSearchParams";
 
 export default function Navbar() {
   const { newsFeedShown, setNewsFeedShown } = useNewsFeedShown();
   const { userInfo, logout } = useUserInfo();
   const { appId } = useParams();
-  const [params] = useSearchParams();
+  const { paramsString } = useCustomSearchParams();
   const linkStyle = "hover:pointer-cursor hover:underline"
-  const urlAdditions = `?${appId != null ? `appId=${appId}` : ""}&${params.toString()}`
+  const urlAdditions = `?${appId != null ? `appId=${appId}` : ""}&${paramsString}`
 
   return (
     <nav className="w-[300px] bg-secondary sticky top-0 h-svh p-8">

@@ -1,16 +1,13 @@
-import { useSearchParams } from "react-router";
+import { useCustomSearchParams } from "./useCustomSearchParams";
 
 export const useSaveGameSearch = () => {
-  const [params, setParams] = useSearchParams();
+  const { getParam, setParam } = useCustomSearchParams();
 
   const setSearchParam = (search: string) => {
-    setParams(prev => {
-      prev.set("search", search)
-      return prev
-    })
+    setParam("search", search)
   }
 
-  const searchParam = params.get("search") || "";
+  const searchParam = getParam("search") || "";
 
   return { searchParam, setSearchParam }
 }

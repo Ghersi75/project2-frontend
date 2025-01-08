@@ -1,10 +1,10 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card";
 import { useEffect, useRef, useState } from "react";
 import { BiDownvote, BiUpvote } from "react-icons/bi";
-import { useSearchParams } from "react-router";
 import { GameThreadCardProps } from "@/Types/GameThreadsTypes";
 import { Button } from "@/Components/ui/button";
 import { useIsVisible } from "@/Hooks/useIsVisible";
+import { useCustomSearchParams } from "@/Hooks/useCustomSearchParams";
 
 export default function GameThreadCard({
   canInteract,
@@ -23,7 +23,7 @@ export default function GameThreadCard({
   dislikes,
   postedAt,
 }: GameThreadCardProps) {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { getParam, setParam, deleteParam } = useCustomSearchParams();
   const threadScrollRef = useRef<null | HTMLDivElement>(null);
   const textAreaRef = useRef<null | HTMLTextAreaElement>(null);
   const [editing, setEditing] = useState(false);
@@ -41,7 +41,7 @@ export default function GameThreadCard({
     dislikedStyle = `hover:cursor-pointer ${liked == false ? "fill-blue-500 hover:fill-current" : "hover:fill-blue-500"}`;
   }
 
-  const threadId = searchParams.get("threadId");
+  const threadId = getParam("threadId");
 
   useEffect(() => {
     if (textAreaRef.current == null || !editing) {
@@ -71,17 +71,11 @@ export default function GameThreadCard({
   // If user interacts with a review, keep track of it so if page is refreshed it goes to it
   // https://stackoverflow.com/a/74892042
   const updateThreadId = () => {
-    setSearchParams(prev => {
-      prev.set("threadId", reviewId.toString())
-      return prev
-    });
+    setParam("threadId", reviewId.toString())
   }
 
   const clearThreadId = () => {
-    setSearchParams(prev => {
-      prev.delete("threadId", reviewId.toString())
-      return prev
-    });
+    deleteParam("threadId")
   }
 
   return (

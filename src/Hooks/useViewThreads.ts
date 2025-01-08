@@ -1,23 +1,17 @@
-import { useSearchParams } from "react-router";
+import { useCustomSearchParams } from "./useCustomSearchParams";
 
 export const useViewThreads = () => {
-  const [params, setParams] = useSearchParams();
+  const { getParam, setParam, deleteParam } = useCustomSearchParams();
 
   const setViewThreads = (view: boolean) => {
     if (view) {
-      setParams(prev => {
-        prev.set("viewThreads", "true")
-        return prev
-      })
+      setParam("viewThreads", "true")
     } else {
-      setParams(prev => {
-        prev.delete("viewThreads")
-        return prev
-      })
+      deleteParam("viewThreads")
     }
   }
 
-  const viewThreads = params.get("viewThreads") != null;
+  const viewThreads = getParam("viewThreads") != null;
 
   return { viewThreads, setViewThreads }
 }

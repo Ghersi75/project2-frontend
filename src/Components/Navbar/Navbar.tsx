@@ -25,7 +25,7 @@ export default function Navbar() {
           </div>
         }
         <h1> {userInfo ? `${userInfo.username} ${userInfo.displayName}` : "Profile"} </h1>
-        { userInfo && <Button variant="ghost" className="hover:underline w-fit bg-red-500" onClick={logout}> logout </Button>}
+        {userInfo && <Button variant="ghost" className="hover:underline w-fit bg-red-500" onClick={logout}> logout </Button>}
         <Link to="/search" className={linkStyle}> Search </Link>
 
 
@@ -33,7 +33,9 @@ export default function Navbar() {
         {
           userInfo != null &&
           <>
-            <h1> Favorited Games </h1>
+            <Link to="/favorites">
+              <h1 className="hover:underline hover:cursor-pointer"> Favorited Games </h1>
+            </Link>
             <h1 className="hover:underline hover:cursor-pointer" onClick={() => { setNewsFeedShown(prev => !prev) }}> {newsFeedShown == true ? "Hide News Feed" : "Show News Feed"} </h1>
           </>
         }

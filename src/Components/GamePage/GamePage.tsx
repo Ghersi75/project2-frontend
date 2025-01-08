@@ -8,12 +8,18 @@ import GameScreenshots from "./GameScreenshots";
 import GameMovies from "./GameMovies";
 import GamePriceBadge from "./GamePriceBadge";
 import GamePageSidebar from "./GamePageSidebar";
+import { BiBookmark, BiSolidBookmark } from "react-icons/bi";
+import { capitalizeFirst } from "@/lib/utils";
+import { useUserInfo } from "@/Hooks/useUserInfo";
+import { useDefaultRequestOptions } from "@/Hooks/useDefaultRequestOptions";
 
 export default function GamePage() {
   const { appId } = useParams();
   const navigate = useNavigate();
-  // TODO: Fix the type here
   const [gameInfo, setGameInfo] = useState<GamePageGameInfo>();
+  const [favorited, setFavorited] = useState<boolean | null>(null)
+  const { userInfo } = useUserInfo();
+  const { defaultOptions } = useDefaultRequestOptions();
 
   if (appId == undefined) {
     return;
@@ -28,28 +34,109 @@ export default function GamePage() {
           // Return to home page if no game is found with given appId
           navigate("/");
         }
-        setGameInfo(res.data[appId].data)
+
+        const platforms: {
+          windows: boolean,
+          linux: boolean,
+          mac: boolean
+        } = res.data[appId].data.platforms;
+
+        const filtered = Object.entries(platforms)
+          // Filter by availability first
+          .filter(([_, availability]) => availability)
+          // Save only the platform if available and capitalize first letter
+          .map(([platform, _]) => capitalizeFirst(platform))
+
+        setGameInfo({
+          ...res.data[appId].data,
+          thumbnailLink: res.data[appId].data.header_image,
+          availableOn: filtered
+        })
       })
       .catch(err => console.error(err))
   }, [])
 
+  useEffect(() => {
+    if (userInfo == null) {
+      return;
+    }
+
+    axios.get(`${import.meta.env.VITE_BACKEND}/game/favorites/${appId}?username=${userInfo.username}`)
+      .then((res) => {
+        console.log("here")
+        setFavorited(res.data.favorited)
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }, [userInfo])
+
   if (gameInfo == undefined) {
     return;
+  }
+
+  const handleSetFavorite = () => {
+    if (userInfo == null) {
+      return
+    }
+    if (favorited) {
+      // Delete favorite
+      axios.delete(`${import.meta.env.VITE_BACKEND}/game/favorites?username=${userInfo.username}&appid=${appId}`, defaultOptions)
+        .then((_) => {
+          setFavorited(prev => !prev)
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    } else {
+      // Create favorite
+      const body = {
+        appId: appId,
+        name: gameInfo.name,
+        thumbnailLink: gameInfo.thumbnailLink,
+        availableOn: gameInfo.availableOn
+      }
+
+      axios.post(`${import.meta.env.VITE_BACKEND}/game/favorites?username=${userInfo.username}&appid=${appId}`, body, defaultOptions)
+        .then((_) => {
+          setFavorited(prev => !prev)
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    }
+
   }
 
   return (
     <div className="flex flex-row grow">
       <div className="grow flex justify-center p-4 max-h-svh overflow-scroll">
         <div className="max-w-[1000px] flex flex-col gap-4">
-          <h1 className="text-2xl"> {gameInfo.name} </h1>
-          <div className="flex gap-2">
-            {gameInfo.genres?.map((genre, idx) => {
-              return (
-                <Badge variant="secondary" key={idx}>
-                  {genre.description}
-                </Badge>
-              )
-            })}
+          <div className="flex flex-row justify-between items-center">
+            <div className="flex flex-col gap-2">
+              <h1 className="text-2xl"> {gameInfo.name} </h1>
+              <div className="flex gap-2">
+                {gameInfo.genres?.map((genre, idx) => {
+                  return (
+                    <Badge variant="secondary" key={idx}>
+                      {genre.description}
+                    </Badge>
+                  )
+                })}
+              </div>
+            </div>
+            <Button variant="outline" className="items-center hover:underline" onClick={handleSetFavorite}>
+              {
+                favorited ?
+                  <>
+                    Unfavorite game: <BiSolidBookmark />
+                  </>
+                  :
+                  <>
+                    Favorite game: <BiBookmark />
+                  </>
+              }
+            </Button>
           </div>
           {
             gameInfo.screenshots && gameInfo.screenshots.length > 0 &&
@@ -62,7 +149,7 @@ export default function GamePage() {
           }
 
           <div className={gameInfo.price_overview ? "flex justify-between" : "grid"}>
-            { gameInfo.price_overview && <GamePriceBadge priceOverview={gameInfo.price_overview} /> }
+            {gameInfo.price_overview && <GamePriceBadge priceOverview={gameInfo.price_overview} />}
             <Link to={`https://store.steampowered.com/app/${appId}`} className={gameInfo.price_overview ? "" : "justify-self-end"}>
               <Button variant="secondary"> View On Steam </Button>
             </Link>

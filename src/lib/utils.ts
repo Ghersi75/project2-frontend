@@ -19,3 +19,7 @@ export function formatTime(unix: number): string {
 
   return formattedDate
 }
+
+export function capitalizeFirst(word: string) {
+  return word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase();
+}

@@ -6,13 +6,17 @@ export default function ProfileDisplayNameForm({
   displayName,
   setDisplayName,
   currentDisplayName,
-  displayNameError
+  displayNameError,
+  displayNameSuccess,
+  handleDisplayNameChange
 }: {
   formStyle: string,
   displayName: string,
   setDisplayName: React.Dispatch<React.SetStateAction<string>>,
   currentDisplayName: string,
-  displayNameError: string
+  displayNameError: string,
+  displayNameSuccess: string,
+  handleDisplayNameChange: () => void
 }) {
   return (
     <form className={formStyle} onSubmit={(e) => e.preventDefault()}>
@@ -23,8 +27,10 @@ export default function ProfileDisplayNameForm({
         setValue={setDisplayName} />
       <Button
         variant="secondary"
-        disabled={displayName == "" || displayName == currentDisplayName}> Update display name </Button>
-      {displayNameError != "" && <h3 className="p-0 text-destructive"> {displayNameError} </h3>}
-    </form>
+        disabled={displayName == "" || displayName == currentDisplayName}
+        onClick={handleDisplayNameChange}> Update display name </Button>
+      {displayNameError != "" && <h3 className="p-0 text-destructive text-sm"> {displayNameError} </h3>}
+      {displayNameSuccess != "" && <h3 className="p-0 text-green-600 text-sm"> {displayNameSuccess} </h3>}
+      </form>
   )
 }

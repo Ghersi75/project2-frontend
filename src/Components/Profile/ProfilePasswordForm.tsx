@@ -10,6 +10,7 @@ export default function ProfilePasswordForm({
   newPassword,
   setNewPassword,
   passwordError,
+  passwordSuccess,
   handlePasswordChange
 }: {
   formStyle: string,
@@ -20,6 +21,7 @@ export default function ProfilePasswordForm({
   newPassword: string,
   setNewPassword: React.Dispatch<React.SetStateAction<string>>,
   passwordError: string,
+  passwordSuccess: string,
   handlePasswordChange: () => void
 }) {
   return (
@@ -43,7 +45,8 @@ export default function ProfilePasswordForm({
         variant="secondary"
         disabled={oldPassword != confirmPassword || newPassword.length == 0}
         onClick={handlePasswordChange}> Update password </Button>
-      {passwordError != "" && <h3 className="p-0 text-destructive"> {passwordError} </h3>}
-    </form>
+      {passwordError != "" && <h3 className="p-0 text-destructive text-sm"> {passwordError} </h3>}
+      {passwordSuccess != "" && <h3 className="p-0 text-green-600 text-sm"> {passwordSuccess} </h3>}
+      </form>
   )
 }

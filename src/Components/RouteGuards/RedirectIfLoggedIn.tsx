@@ -10,9 +10,9 @@ export default function RedirectIfLoggedIn({ children }: { children: ReactNode }
   // TODO: Fix paramsString also inclduing appId if there's enough time
   // Makes no difference in the application but its not supposed to be duplicated
   const appId = getParam("appId");
-
+  
   if (userInfo != null) {
-    return <Navigate to={`/${appId}?${paramsString}`} />
+    return <Navigate to={`/${appId || ""}?${paramsString}`} />
   }
 
   return (

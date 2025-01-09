@@ -6,7 +6,9 @@ export default function MainLayout() {
   return (
     <div className="flex flex-row">
       <Navbar />
-      <Outlet />
+      <div className="grow">
+        <Outlet />
+      </div>
       <NewsFeed />
     </div>
   )

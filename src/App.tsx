@@ -10,6 +10,7 @@ import SearchPage from "./Components/SearchPage/SearchPage";
 import { NewsFeedShownProvider } from "./Contexts/NewsFeedShownProvider";
 import { UserProvider } from "./Contexts/UserContext";
 import FavoriteGames from "./Components/FavoriteGames/FavoritedGames";
+import Profile from "./Components/Profile/Profile";
 
 function App() {
   console.log(import.meta.env.VITE_BACKEND);
@@ -25,6 +26,7 @@ function App() {
                 <Route path="/:appId" element={<GamePage />} />
                 <Route path="/search" element={<SearchPage />} />
                 <Route path="/favorites" element={<FavoriteGames />} />
+                <Route path="/profile" element={<Profile />} />
               </Route>
               <Route element={<AuthLayout />}>
                 <Route path="/login" element={<LoginController />} />

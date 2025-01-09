@@ -41,10 +41,10 @@ export default function Navbar() {
       </div>
       {
         userInfo ?
-          <div className="flex flex-row justify-between items-center">
+          <div className="grid">
             <Link to="/profile">
               <div className="flex flex-col gap-1">
-                <h1 className="text-2xl">
+                <h1 className="text-xl">
                   {userInfo.displayName}
                 </h1>
                 <h2 className="text-muted-foreground text-sm">
@@ -52,7 +52,7 @@ export default function Navbar() {
                 </h2>
               </div>
             </Link>
-            <Button className="hover:underline w-fit text-muted-foreground" onClick={logout}>
+            <Button variant="outline" className="hover:underline w-fit text-muted-foreground justify-self-end" onClick={logout}>
               logout
             </Button>
           </div>

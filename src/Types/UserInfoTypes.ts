@@ -12,5 +12,6 @@ export interface UserInfoType {
 
 export interface UserInfoContextType {
   userInfo: UserInfoType | null,
-  logout: () => void
+  logout: () => void,
+  loading: boolean
 }

@@ -8,6 +8,7 @@ export const UserContext = createContext<UserInfoContextType | null>(null);
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [cookies, _, removeCookie] = useCookies(["token"]);
   const [userInfo, setUserInfo] = useState<UserInfoType | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const logout = () => {
     removeCookie("token")
@@ -16,6 +17,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (cookies.token == null) {
       setUserInfo(null);
+      setLoading(false);
       return;
     }
 
@@ -26,10 +28,11 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       displayName: jwt.displayName,
       userRole: jwt.userRole,
     });
+    setLoading(false);
   }, [cookies.token]);
 
   return (
-    <UserContext.Provider value={{ userInfo, logout }}>
+    <UserContext.Provider value={{ userInfo, logout, loading }}>
       {children}
     </UserContext.Provider>
   );

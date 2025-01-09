@@ -1,29 +1,89 @@
 import { useUserInfo } from "@/Hooks/useUserInfo";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProfilePasswordForm from "./ProfilePasswordForm";
 import ProfileUsernameForm from "./ProfileUsernameForm";
 import ProfileDisplayNameForm from "./ProfileDisplayNameForm";
+import axios from "axios";
+import { useDefaultRequestOptions } from "@/Hooks/useDefaultRequestOptions";
 
 export default function Profile() {
-  const { userInfo } = useUserInfo();
-  const [username, setUsername] = useState(userInfo?.username || "");
-  const [usernameError, setUsernameError] = useState("test")
-  const [displayName, setDisplayName] = useState(userInfo?.displayName || "");
-  const [displayNameError, setDisplayNameError] = useState("test")
+  const { userInfo, loading } = useUserInfo();
+  const { defaultOptions } = useDefaultRequestOptions();
+  const [username, setUsername] = useState("");
+  const [usernameError, setUsernameError] = useState("");
+  const [usernameSuccess, setUsernameSuccess] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [displayNameError, setDisplayNameError] = useState("")
+  const [displayNameSuccess, setDisplayNameSuccess] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [passwordError, setPasswordError] = useState("test");
+  const [passwordError, setPasswordError] = useState("");
+  const [passwordSuccess, setPasswordSuccess] = useState("");
 
+  useEffect(() => {
+    if (userInfo == null) {
+      return;
+    }
+
+    setUsername(userInfo.username);
+    setDisplayName(userInfo.displayName);
+  }, [loading])
+  
   if (userInfo == null) {
     return;
   }
 
   const formStyle = "flex flex-col gap-2";
 
+  const handleUsernameChange = () => {
+    setUsernameError("")
+    setUsernameSuccess("")
+    const body = {
+      newUsername: username
+    }
+
+    axios.put(`${import.meta.env.VITE_BACKEND}/user/username?username=${userInfo.username}`, body, defaultOptions)
+      .then(() => {
+        setUsernameSuccess("Username successfully updated")
+      })
+      .catch(err => {
+        setUsernameError(err.response.data.error || "Error updating username, please try again later")
+      })
+  }
+
+  const handleDisplayNameChange = () => {
+    setDisplayNameError("")
+    setDisplayNameSuccess("")
+    const body = {
+      newDisplayName: displayName
+    }
+
+    axios.put(`${import.meta.env.VITE_BACKEND}/user/displayname?username=${userInfo.username}`, body, defaultOptions)
+      .then(() => {
+        setDisplayNameSuccess("Display name successfully updated")
+      })
+      .catch(err => {
+        setDisplayNameError(err.response.data.error || "Error updating display name, please try again later")
+      })
+  }
+
   const handlePasswordChange = () => {
-    console.log("submitted")
+    setPasswordError("")
+    setPasswordSuccess("")
+    const body = {
+      oldPassword,
+      newPassword
+    }
+
+    axios.put(`${import.meta.env.VITE_BACKEND}/user/password?username=${userInfo.username}`, body, defaultOptions)
+      .then(() => {
+        setPasswordSuccess("Password successfully updated")
+      })
+      .catch(err => {
+        setDisplayNameError(err.response.data.error || "Error updating password, please try again later")
+      })
   }
 
   return (
@@ -43,14 +103,18 @@ export default function Profile() {
             username={username}
             setUsername={setUsername}
             currentUsername={userInfo.username}
-            usernameError={usernameError} />
+            usernameError={usernameError}
+            usernameSuccess={usernameSuccess}
+            handleUsernameChange={handleUsernameChange} />
 
           <ProfileDisplayNameForm
             formStyle={formStyle}
             displayName={displayName}
             setDisplayName={setDisplayName}
             currentDisplayName={userInfo.displayName}
-            displayNameError={displayNameError} />
+            displayNameError={displayNameError}
+            handleDisplayNameChange={handleDisplayNameChange}
+            displayNameSuccess={displayNameSuccess} />
 
           <ProfilePasswordForm
             formStyle={formStyle}
@@ -61,6 +125,7 @@ export default function Profile() {
             newPassword={newPassword}
             setNewPassword={setNewPassword}
             passwordError={passwordError}
+            passwordSuccess={passwordSuccess}
             handlePasswordChange={handlePasswordChange} />
         </CardContent>
       </Card>

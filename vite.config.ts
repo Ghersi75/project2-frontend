@@ -1,11 +1,15 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { resolve } from "path";
+import EnvironmentPlugin from "vite-plugin-environment"
 
 // Updated config according to guide above in order to properly expose the application while running in a docker container
 export default defineConfig({
   base: "/",
-  plugins: [react()],
+  plugins: [
+    react(),
+    EnvironmentPlugin("all")
+  ],
   preview: {
     port: 8080,
     strictPort: true,

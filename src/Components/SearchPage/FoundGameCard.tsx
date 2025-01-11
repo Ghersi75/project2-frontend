@@ -3,7 +3,6 @@ import { Card, CardHeader, CardTitle } from "../ui/card";
 import { Link } from "react-router";
 
 export default function FoundGameCard({ gameInfo }: { gameInfo: GameSearchType }) {
-  console.log(gameInfo)
   return (
     <Link to={`/${gameInfo.appid}`}>
       <Card className="flex overflow-hidden">

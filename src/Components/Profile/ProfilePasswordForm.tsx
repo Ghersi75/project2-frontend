@@ -32,21 +32,21 @@ export default function ProfilePasswordForm({
         password={oldPassword}
         setPassword={setOldPassword} />
       <ProfilePasswordInput
-        label="confirmPassword"
-        displayText="Confirm password: "
-        password={confirmPassword}
-        setPassword={setConfirmPassword} />
-      <ProfilePasswordInput
         label="newPassword"
         displayText="New password: "
         password={newPassword}
         setPassword={setNewPassword} />
+      <ProfilePasswordInput
+        label="confirmPassword"
+        displayText="Confirm password: "
+        password={confirmPassword}
+        setPassword={setConfirmPassword} />
       <Button
         variant="secondary"
-        disabled={oldPassword != confirmPassword || newPassword.length == 0}
+        disabled={newPassword != confirmPassword || newPassword.length == 0}
         onClick={handlePasswordChange}> Update password </Button>
       {passwordError != "" && <h3 className="p-0 text-destructive text-sm"> {passwordError} </h3>}
       {passwordSuccess != "" && <h3 className="p-0 text-green-600 text-sm"> {passwordSuccess} </h3>}
-      </form>
+    </form>
   )
 }

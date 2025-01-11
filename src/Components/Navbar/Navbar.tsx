@@ -1,4 +1,4 @@
-import useNewsFeedShown from "@/Hooks/useNewsFeedShown";
+import { useNewsFeedShown } from "@/Hooks/useNewsFeedShown";
 import { useUserInfo } from "@/Hooks/useUserInfo";
 import { cn } from "@/lib/utils";
 import { Link, useParams } from "react-router";
@@ -25,9 +25,6 @@ export default function Navbar() {
           <Link to="" className={cn(linkStyle, "text-2xl")}> Home </Link>
           {/* Profile or login/sign up */}
           <Link to="/search" className={linkStyle}> Search </Link>
-
-
-          {/* Theese 2 are only available if logged in */}
           {
             userInfo != null &&
             <>

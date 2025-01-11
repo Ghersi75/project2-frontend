@@ -1,7 +1,7 @@
 import { NewsFeedShownContext } from "@/Contexts/NewsFeedShownProvider";
 import { useContext } from "react";
 
-export default function useNewsFeedShown() {
+export const useNewsFeedShown = () => {
   const ctx = useContext(NewsFeedShownContext);
 
   if (ctx == null) {

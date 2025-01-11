@@ -43,7 +43,7 @@ export default function ProfilePasswordForm({
         setPassword={setConfirmPassword} />
       <Button
         variant="secondary"
-        disabled={newPassword != confirmPassword || newPassword.length == 0}
+        disabled={oldPassword == "" || newPassword != confirmPassword || newPassword.length == 0}
         onClick={handlePasswordChange}> Update password </Button>
       {passwordError != "" && <h3 className="p-0 text-destructive text-sm"> {passwordError} </h3>}
       {passwordSuccess != "" && <h3 className="p-0 text-green-600 text-sm"> {passwordSuccess} </h3>}

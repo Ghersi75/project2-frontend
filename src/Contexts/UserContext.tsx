@@ -1,11 +1,11 @@
-import React, { createContext, useEffect, useState } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 import { jwtType, UserInfoContextType, UserInfoType } from "@/Types/UserInfoTypes";
 
 export const UserContext = createContext<UserInfoContextType | null>(null);
 
-export const UserProvider = ({ children }: { children: React.ReactNode }) => {
+export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [cookies, _, removeCookie] = useCookies(["token"]);
   const [userInfo, setUserInfo] = useState<UserInfoType | null>(null);
   const [loading, setLoading] = useState(true);

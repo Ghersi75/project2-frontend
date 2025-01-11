@@ -44,12 +44,12 @@ export default function Profile() {
       newUsername: username
     }
 
-    axios.put(`${import.meta.env.VITE_BACKEND}/user/username?username=${userInfo.username}`, body, defaultOptions)
+    axios.put(`${process.env.VITE_BACKEND}/user/username?username=${userInfo.username}`, body, defaultOptions)
       .then(() => {
         setUsernameSuccess("Username successfully updated")
       })
       .catch(err => {
-        setUsernameError(err.response.data.error || "Error updating username, please try again later")
+        setUsernameError(err.response?.data?.error || "Error updating username, please try again later")
       })
   }
 
@@ -60,12 +60,12 @@ export default function Profile() {
       newDisplayName: displayName
     }
 
-    axios.put(`${import.meta.env.VITE_BACKEND}/user/displayname?username=${userInfo.username}`, body, defaultOptions)
+    axios.put(`${process.env.VITE_BACKEND}/user/displayname?username=${userInfo.username}`, body, defaultOptions)
       .then(() => {
         setDisplayNameSuccess("Display name successfully updated")
       })
       .catch(err => {
-        setDisplayNameError(err.response.data.error || "Error updating display name, please try again later")
+        setDisplayNameError(err.response?.data?.error || "Error updating display name, please try again later")
       })
   }
 
@@ -77,12 +77,12 @@ export default function Profile() {
       newPassword
     }
 
-    axios.put(`${import.meta.env.VITE_BACKEND}/user/password?username=${userInfo.username}`, body, defaultOptions)
+    axios.put(`${process.env.VITE_BACKEND}/user/password?username=${userInfo.username}`, body, defaultOptions)
       .then(() => {
         setPasswordSuccess("Password successfully updated")
       })
       .catch(err => {
-        setDisplayNameError(err.response.data.error || "Error updating password, please try again later")
+        setPasswordError(err.response?.data?.error || "Error updating password, please try again later")
       })
   }
 

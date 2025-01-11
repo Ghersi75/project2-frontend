@@ -63,7 +63,6 @@ export interface GameNewsType {
 export interface GameSearchType {
   appid: number,
   name: string,
-  icon: string,
   logo: string
 }
 

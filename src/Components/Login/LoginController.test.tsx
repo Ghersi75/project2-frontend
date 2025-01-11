@@ -16,6 +16,8 @@ const defaultOptions = {
 
 // Mock axios calls since tests wont interact with actual apis
 jest.mock("axios");
+const mockAxiosPost = axios.post as jest.Mock;
+
 // Mock defaultOptions returned by hook since cookies and user info are not accessible in the test
 jest.mock("@/Hooks/useDefaultRequestOptions", () => ({
   useDefaultRequestOptions: () => ({
@@ -35,7 +37,7 @@ const LoginControllerWithContext = () => {
 }
 
 test("renders the LoginController and handles API call success", async () => {
-  (axios.post as jest.Mock).mockResolvedValueOnce({ data: { message: "Success" } });
+  mockAxiosPost.mockResolvedValueOnce({ data: { message: "Success" } });
 
   render(<LoginControllerWithContext />);
 
@@ -62,7 +64,7 @@ test("renders the LoginController and handles API call success", async () => {
 });
 
 test("handles API call failure and displays error message", async () => {
-  (axios.post as jest.Mock).mockRejectedValueOnce({
+  mockAxiosPost.mockRejectedValueOnce({
     response: { data: { error: "Invalid credentials" } },
   });
 
@@ -88,7 +90,7 @@ test("handles API call failure and displays error message", async () => {
 });
 
 test("handles API call failure and displays an error message instead of response from backend", async () => {
-  (axios.post as jest.Mock).mockRejectedValueOnce({
+  mockAxiosPost.mockRejectedValueOnce({
     message: "Invalid credentials"
   });
 
@@ -114,7 +116,7 @@ test("handles API call failure and displays an error message instead of response
 });
 
 test("handles API call failure and displays a fallback error message when no message or response error are present", async () => {
-  (axios.post as jest.Mock).mockRejectedValueOnce({});
+  mockAxiosPost.mockRejectedValueOnce({});
 
   render(
     <LoginControllerWithContext />

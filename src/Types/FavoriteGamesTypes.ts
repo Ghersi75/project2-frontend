@@ -1,6 +1,6 @@
 export interface FavoriteGameType {
   id: number,
-  appid: number,
+  appId: number,
   name: string,
   thumbnailLink: string,
   availableOn: string[]

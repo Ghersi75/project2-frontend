@@ -24,8 +24,8 @@ export default function GameCard({ item }: { item: FavoriteGameType }) {
           </CardTitle>
         </CardHeader>
         <CardFooter className="flex justify-between items-center p-4 pt-0">
-          <Button variant="secondary"> <Link to={`https://store.steampowered.com/app/${item.appid}`}> View On Steam </Link> </Button>
-          <Button variant="secondary"> <Link to={`/${item.appid}`}> View More</Link> </Button>
+          <Button variant="secondary"> <Link to={`https://store.steampowered.com/app/${item.appId}`}> View On Steam </Link> </Button>
+          <Button variant="secondary"> <Link to={`/${item.appId}`}> View More</Link> </Button>
         </CardFooter>
       </CardContent>
     </Card>

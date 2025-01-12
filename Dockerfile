@@ -8,8 +8,12 @@ COPY package.json .
 
 RUN npm install
 
+RUN npm i -g serve
+
 COPY . .
 
-EXPOSE 8080
+RUN npm run build
 
-CMD [ "npm", "run", "dev" ]
+EXPOSE 3000
+
+CMD [ "serve", "-s", "dist" ]

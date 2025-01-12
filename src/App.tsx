@@ -11,6 +11,7 @@ import { UserProvider } from "./Contexts/UserContext";
 import ProfileController from "./Components/Profile/ProfileController";
 import HomeController from "./Components/Home/HomeController";
 import FavoritedGamesController from "./Components/FavoriteGames/FavoritedGamesController";
+import { GamePageProvider } from "./Contexts/GamePageContext";
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
             <Routes>
               <Route element={<MainLayout />}>
                 <Route path="" element={<HomeController />} />
-                <Route path="/:appId" element={<GamePage />} />
+                <Route path="/:appId" element={<GamePageProvider> <GamePage /> </GamePageProvider>} />
                 <Route path="/search" element={<SearchPage />} />
                 <Route path="/favorites" element={<FavoritedGamesController />} />
                 <Route path="/profile" element={<ProfileController />} />

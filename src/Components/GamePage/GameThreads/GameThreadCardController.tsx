@@ -5,6 +5,8 @@ import axios from "axios";
 import { useState } from "react";
 import GameThreadCard from "./GameThreadCard";
 import { format } from "date-fns";
+import { useParams } from "react-router";
+import { useGamePageInfo } from "@/Hooks/useGamePageInfo";
 
 export default function GameThreadCardController({
   item,
@@ -21,6 +23,8 @@ export default function GameThreadCardController({
   const { defaultOptions } = useDefaultRequestOptions();
   const { userInfo } = useUserInfo();
   const [content, setContent] = useState(item.content);
+  const { appId } = useParams()
+  const { gameName } = useGamePageInfo();
 
   const canInteract = userInfo != null && userInfo.username != item.username
   const canEdit = userInfo != null && userInfo.username == item.username;
@@ -32,8 +36,11 @@ export default function GameThreadCardController({
     }
     const body = {
       reviewid: item.reviewId,
+      gameName: gameName,
+      appid: appId,
       interaction: like ? "LIKE" : "DISLIKE"
     }
+
     axios.post(`${import.meta.env.VITE_BACKEND}/reviews/${like ? "like" : "dislike"}?username=${userInfo.username}`, body, defaultOptions)
       .then((res) => {
         console.log(res)

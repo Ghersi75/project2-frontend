@@ -12,6 +12,7 @@ import { BiBookmark, BiSolidBookmark } from "react-icons/bi";
 import { capitalizeFirst } from "@/lib/utils";
 import { useUserInfo } from "@/Hooks/useUserInfo";
 import { useDefaultRequestOptions } from "@/Hooks/useDefaultRequestOptions";
+import { useGamePageInfo } from "@/Hooks/useGamePageInfo";
 
 export default function GamePage() {
   const { appId } = useParams();
@@ -20,6 +21,7 @@ export default function GamePage() {
   const [favorited, setFavorited] = useState<boolean | null>(null)
   const { userInfo } = useUserInfo();
   const { defaultOptions } = useDefaultRequestOptions();
+  const { setGameName } = useGamePageInfo();
 
   if (appId == undefined) {
     return;
@@ -52,6 +54,8 @@ export default function GamePage() {
           thumbnailLink: res.data[appId].data.header_image,
           availableOn: filtered
         })
+
+        setGameName(res.data[appId].data.name)
       })
       .catch(err => console.error(err))
   }, [])

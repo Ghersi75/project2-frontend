@@ -8,12 +8,14 @@ import { useCookies } from "react-cookie";
 import { useUserInfo } from "@/Hooks/useUserInfo";
 import { GameThreadType } from "@/Types/GameAPIReturnTypes";
 import GameThreadCardController from "./GameThreadCardController";
+import { useGamePageInfo } from "@/Hooks/useGamePageInfo";
 
 export default function GameThreads() {
   const [reviewText, setReviewText] = useState("")
   const [cookies] = useCookies(["token"]);
   const { appId } = useParams();
   const { userInfo } = useUserInfo();
+  const { gameName } = useGamePageInfo();
   const [data, setData] = useState<GameThreadType[]>([]);
 
   useEffect(() => {
@@ -35,10 +37,9 @@ export default function GameThreads() {
   const handleSubmit = () => {
     const body = {
       content: reviewText,
-      appid: appId
+      appid: appId,
+      gameName: gameName
     }
-
-    console.log(body)
 
     axios.post(`${import.meta.env.VITE_BACKEND}/reviews/${userInfo?.username}`, body, {
       headers: {

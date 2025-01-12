@@ -2,9 +2,11 @@ import { FavoriteGameType } from "@/Types/FavoriteGamesTypes";
 import FavoriteGameCard from "./FavoriteGameCard";
 
 export default function FavoritedGames({
-  games
+  games,
+  handleUnfavorite
 }: {
   games: FavoriteGameType[]
+  handleUnfavorite: (appId: number) => void
 }) {
   return (
     <div className="grow p-8 flex flex-col gap-4">
@@ -18,7 +20,10 @@ export default function FavoritedGames({
               {
                 games.map(item => {
                   return (
-                    <FavoriteGameCard item={item} key={item.id} />
+                    <FavoriteGameCard
+                      item={item}
+                      key={item.id}
+                      handleUnfavorite={handleUnfavorite} />
                   )
                 })
               }

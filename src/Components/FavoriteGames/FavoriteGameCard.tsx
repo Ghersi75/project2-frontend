@@ -4,7 +4,13 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card
 import { Badge } from "../ui/badge";
 import { FavoriteGameType } from "@/Types/FavoriteGamesTypes";
 
-export default function GameCard({ item }: { item: FavoriteGameType }) {
+export default function GameCard({
+  item,
+  handleUnfavorite
+}: {
+  item: FavoriteGameType
+  handleUnfavorite: (appId: number) => void
+}) {
   return (
     <Card className="3xl:w-[500px] w-[400px] p-0 overflow-hidden">
       <CardContent className="p-0">
@@ -20,6 +26,11 @@ export default function GameCard({ item }: { item: FavoriteGameType }) {
                   return <Badge variant="secondary" className="w-fit" key={idx}> {available} </Badge>
                 })
               }
+            </div>
+            <div className="grid">
+              <Button variant="outline" className="items-center hover:underline w-fit" onClick={() => handleUnfavorite(item.appId)}>
+                Unfavorite game
+              </Button>
             </div>
           </CardTitle>
         </CardHeader>

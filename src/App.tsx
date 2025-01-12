@@ -1,7 +1,6 @@
 import { ThemeProvider } from "./Contexts/ThemeProvider";
 import { BrowserRouter, Route, Routes } from "react-router";
 import AuthLayout from "./Components/AuthLayout";
-import Home from "./Components/Home/Home";
 import GamePage from "./Components/GamePage/GamePage";
 import SignUpController from "./Components/SignUp/SignUpController";
 import LoginController from "./Components/Login/LoginController";
@@ -11,6 +10,7 @@ import { NewsFeedShownProvider } from "./Contexts/NewsFeedShownProvider";
 import { UserProvider } from "./Contexts/UserContext";
 import FavoriteGames from "./Components/FavoriteGames/FavoritedGames";
 import ProfileController from "./Components/Profile/ProfileController";
+import HomeController from "./Components/Home/HomeController";
 
 function App() {
   console.log(import.meta.env.VITE_BACKEND);
@@ -22,7 +22,7 @@ function App() {
           <NewsFeedShownProvider>
             <Routes>
               <Route element={<MainLayout />}>
-                <Route path="" element={<Home />} />
+                <Route path="" element={<HomeController />} />
                 <Route path="/:appId" element={<GamePage />} />
                 <Route path="/search" element={<SearchPage />} />
                 <Route path="/favorites" element={<FavoriteGames />} />

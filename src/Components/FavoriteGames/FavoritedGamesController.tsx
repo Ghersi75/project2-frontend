@@ -16,9 +16,8 @@ export default function FavoritedGamesController() {
       return;
     }
 
-    axios.get(`${import.meta.env.VITE_BACKEND}/game/favorites?username=${userInfo.username}`)
+    axios.get(`${process.env.VITE_BACKEND}/game/favorites?username=${userInfo.username}`)
       .then(res => {
-        console.log(res)
         setGames(res.data)
       })
       .catch(err => {

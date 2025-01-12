@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useParams } from "react-router";
 import { Button } from "../ui/button";
-import GameNews from "./GameNews/GameNews";
 import GameThreads from "./GameThreads/GameThreads";
 import { useNewsFeedShown } from "@/Hooks/useNewsFeedShown";
 import { useViewThreads } from "@/Hooks/useViewThreads";
+import GameNewsController from "./GameNews/GameNewsController";
 
 export default function GamePageSidebar() {
   const { appId } = useParams();
@@ -42,7 +42,7 @@ export default function GamePageSidebar() {
         <Button variant={pageSelected == "news" ? "outline" : "ghost"} onClick={() => { handlePageSelectedClick("news") }}> News </Button>
         <Button variant={pageSelected == "threads" ? "outline" : "ghost"} onClick={() => { handlePageSelectedClick("threads") }} > Threads </Button>
       </div>
-      {pageSelected == "news" && <GameNews />}
+      {pageSelected == "news" && <GameNewsController />}
       {pageSelected == "threads" && <GameThreads />}
     </div>
   )

@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Link, useParams } from "react-router";
 import { Button } from "../ui/button";
 import { useCustomSearchParams } from "@/Hooks/useCustomSearchParams";
+import ToggleLightDarkButton from "./ToggleLightDarkButton";
 
 export default function Navbar() {
   const { newsFeedShown, setNewsFeedShown } = useNewsFeedShown();
@@ -38,7 +39,7 @@ export default function Navbar() {
       </div>
       {
         userInfo ?
-          <div className="grid">
+          <div className="grid gap-2">
             <Link to="/profile">
               <div className="flex flex-col gap-1">
                 <h1 className="text-xl">
@@ -49,9 +50,12 @@ export default function Navbar() {
                 </h2>
               </div>
             </Link>
-            <Button variant="outline" className="hover:underline w-fit text-muted-foreground justify-self-end" onClick={logout}>
-              logout
-            </Button>
+            <div className="flex justify-between">
+              <Button variant="outline" className="hover:underline w-fit text-muted-foreground justify-self-end" onClick={logout}>
+                logout
+              </Button>
+              <ToggleLightDarkButton />
+            </div>
           </div>
           :
           <div className="flex gap-8">

@@ -5,21 +5,26 @@ export default function Home({
   specials,
   topSellers,
   newReleases,
-  comingSoon
+  comingSoon,
+  loading
 }: {
   specials: HomeGameInfoType[],
   topSellers: HomeGameInfoType[],
   newReleases: HomeGameInfoType[],
-  comingSoon: HomeGameInfoType[]
+  comingSoon: HomeGameInfoType[],
+  loading: boolean
 }) {
   return (
     <div className="grow p-8 flex flex-col gap-4">
       {
-        specials.length == 0 &&
-        topSellers.length == 0 &&
-        newReleases.length == 0 &&
-        comingSoon.length == 0 &&
-        <h1 className="text-3xl"> Error fetching games, please try reloading the page </h1>
+        loading ?
+          <h1 className="text-3xl"> Loading </h1>
+          :
+          specials.length == 0 &&
+          topSellers.length == 0 &&
+          newReleases.length == 0 &&
+          comingSoon.length == 0 &&
+          <h1 className="text-3xl"> Error fetching games, please try reloading the page </h1>
       }
       {
         specials.length > 0 &&

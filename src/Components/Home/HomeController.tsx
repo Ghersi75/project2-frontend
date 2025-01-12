@@ -8,6 +8,7 @@ export default function HomeController() {
   const [topSellers, setTopSellers] = useState<HomeGameInfoType[]>([]);
   const [newReleases, setNewReleases] = useState<HomeGameInfoType[]>([]);
   const [comingSoon, setComingSoon] = useState<HomeGameInfoType[]>([]);
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     axios.get(process.env.VITE_STEAM_FEATURED || "")
@@ -24,12 +25,14 @@ export default function HomeController() {
         setNewReleases([]);
         setComingSoon([]);
       })
+      .finally(() => setLoading(false))
   }, []);
   return (
     <Home
       specials={specials}
       topSellers={topSellers}
       newReleases={newReleases}
-      comingSoon={comingSoon} />
+      comingSoon={comingSoon}
+      loading={loading} />
   )
 }

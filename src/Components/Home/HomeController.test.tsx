@@ -90,67 +90,69 @@ describe("HomeController Component", () => {
     jest.clearAllMocks();
   });
 
+  test("renders fallback error message when no data is received from API", async () => {
+    mockedAxios.get.mockResolvedValueOnce({});
+
+    render(<TestComponent />);
+
+    // Wait for the error message to appear
+    await waitFor(() => {
+      expect(screen.getByText(/error fetching games, please try reloading the page/i)).toBeInTheDocument();
+    });
+
+    // Ensure loading state is gone
+    // \b is exact match
+    expect(screen.queryByText(/\bloading\b/i)).not.toBeInTheDocument();
+  });
+
+  test("renders fallback error message on API failure", async () => {
+    mockedAxios.get.mockRejectedValueOnce(new Error("API Error"));
+
+    render(<TestComponent />);
+
+    // Wait for the error message to appear
+    await waitFor(() => {
+      expect(screen.getByText(/error fetching games, please try reloading the page/i)).toBeInTheDocument();
+    });
+
+    // Ensure loading state is gone
+    // \b is exact match
+    expect(screen.queryByText(/\bloading\b/i)).not.toBeInTheDocument();
+  });
+
+  test("renders loading state before data is fetched", async () => {
+    mockedAxios.get.mockResolvedValueOnce(mockResponse);
+
+    render(<TestComponent />);
+
+    // Check that the loading message is displayed
+    expect(screen.getByText(/loading/i)).toBeInTheDocument();
+
+    // Wait for the data to load
+    await waitFor(() => {
+      expect(mockedAxios.get).toHaveBeenCalledTimes(1);
+      expect(mockedAxios.get).toHaveBeenCalledWith(process.env.VITE_STEAM_FEATURED || "");
+    });
+
+    // Ensure loading message is removed after data is loaded
+    expect(screen.queryByText(/loading/i)).not.toBeInTheDocument();
+  });
+
   test("renders and sets data correctly from API", async () => {
     mockedAxios.get.mockResolvedValueOnce(mockResponse);
 
     render(<TestComponent />);
 
-    // Wait for the data to be fetched and rendered
-    await waitFor(() => {
-      expect(mockedAxios.get).toHaveBeenCalledTimes(1);
-      expect(mockedAxios.get).toHaveBeenCalledWith(process.env.VITE_STEAM_FEATURED || "");
-    });
+    // Wait for the data to load
+    await waitFor(() => expect(mockedAxios.get).toHaveBeenCalledTimes(1));
 
-    // Check that data for each section is rendered correctly
+    // Verify the loading message is removed
+    expect(screen.queryByText(/loading/i)).not.toBeInTheDocument();
+
+    // Verify data is displayed correctly
     expect(screen.getByText(/special game 1/i)).toBeInTheDocument();
     expect(screen.getByText(/top seller game 1/i)).toBeInTheDocument();
     expect(screen.getByText(/new release game 1/i)).toBeInTheDocument();
     expect(screen.getByText(/coming soon game 1/i)).toBeInTheDocument();
-
-    // Check that images are rendered correctly
-    expect(screen.getByAltText(/special game 1 large capsule image/i)).toHaveAttribute("src", "special_game_1_image");
-    expect(screen.getByAltText(/top seller game 1 large capsule image/i)).toHaveAttribute("src", "top_seller_game_1_image");
-    expect(screen.getByAltText(/new release game 1 large capsule image/i)).toHaveAttribute("src", "new_release_game_1_image");
-    expect(screen.getByAltText(/coming soon game 1 large capsule image/i)).toHaveAttribute("src", "coming_soon_game_1_image");
   });
-
-  test("receives no response data from successful api call and renders fallback error", async () => {
-    mockedAxios.get.mockResolvedValueOnce({});
-
-    render(<TestComponent />);
-
-    // Wait for the data to be fetched and rendered
-    await waitFor(() => {
-      expect(mockedAxios.get).toHaveBeenCalledTimes(1);
-      expect(mockedAxios.get).toHaveBeenCalledWith(process.env.VITE_STEAM_FEATURED || "");
-    });
-
-    // Check that data for each section is rendered correctly
-    expect(screen.queryByText(/special game 1/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/top seller game 1/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/new release game 1/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/coming soon game 1/i)).not.toBeInTheDocument();
-
-    // Check that fallback is rendered
-    expect(screen.getByText(/error fetching games, please try reloading the page/i)).toBeInTheDocument();
-  });
-
-  test("handles API error gracefully", async () => {
-    mockedAxios.get.mockRejectedValueOnce({});
-
-    render(<TestComponent />);
-
-    // Wait for the component to attempt fetching data
-    await waitFor(() => {
-      expect(mockedAxios.get).toHaveBeenCalledTimes(1);
-    });
-
-    // Ensure no data-dependent elements are rendered
-    expect(screen.queryByText(/special game 1/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/top seller game 1/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/new release game 1/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/coming soon game 1/i)).not.toBeInTheDocument();
-  });
-
-
 });

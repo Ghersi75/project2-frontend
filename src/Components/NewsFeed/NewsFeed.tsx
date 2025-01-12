@@ -1,25 +1,71 @@
-import useNewsFeedShown from "@/Hooks/useNewsFeedShown";
-import { testData } from "./testData";
+import { useNewsFeedShown } from "@/Hooks/useNewsFeedShown";
 import NewsFeedCard from "./NewsFeedCard";
 import { useUserInfo } from "@/Hooks/useUserInfo";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useDefaultRequestOptions } from "@/Hooks/useDefaultRequestOptions";
+import { NewsFeedItemType } from "@/Types/NotificationsTypes";
 
 export default function NewsFeed() {
   const { newsFeedShown } = useNewsFeedShown();
-  const { userInfo } = useUserInfo();
+  const { loading, userInfo } = useUserInfo();
+  const { defaultOptions } = useDefaultRequestOptions();
+  const [notifications, setNotifications] = useState<NewsFeedItemType[]>([])
+
+  useEffect(() => {
+    if (userInfo == null) {
+      return;
+    }
+
+    const interval = setInterval(() => {
+      axios.get(`${process.env.VITE_BACKEND}/notifications/${userInfo?.username}`, defaultOptions)
+        .then(res => {
+          setNotifications(res.data)
+          console.log(res)
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [loading])
 
   if (newsFeedShown == false || userInfo == null) {
     return;
+  }
+
+  const handleDelete = (id: number) => {
+    axios.delete(`${process.env.VITE_BACKEND}/notifications/${id}`, defaultOptions)
+      .then(() => {
+        setNotifications(prev => {
+          return prev.filter(item => {
+            if (item.id != id) {
+              return item
+            }
+          })
+        })
+      })
+      .catch(err => {
+        console.error(err)
+      })
   }
 
   return (
     <div className="w-[400px] sticky top-0 h-svh bg-secondary/20 justify-self-end bg-opacity-10 p-4 flex flex-col overflow-scroll gap-4">
       <h1> News Feed </h1>
       {
-        testData.map((newsInfo, idx) => {
+        notifications.length > 0 ? 
+        notifications.map(newsInfo => {
           return (
-            <NewsFeedCard info={newsInfo} key={idx} />
+            <NewsFeedCard
+              key={newsInfo.id}
+              info={newsInfo}
+              handleDeleteNotification={handleDelete} />
           )
         })
+        :
+        <h2> No new notifications at the moment </h2>
       }
     </div>
   )

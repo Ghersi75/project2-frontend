@@ -16,7 +16,7 @@ export const useGameSearch = (search: string, delay: number) => {
     }
     setSearching(true);
     const handler = setTimeout(async () => {
-      await axios.get(`https://cors-anywhere.herokuapp.com/https://steamcommunity.com/actions/SearchApps/${search}`)
+      await axios.get(`${process.env.VITE_STEAM_SEARCH}${search}`)
         .then(res => {
           setGamesFound(res.data)
           // Save search on each successful search with at least 1 result

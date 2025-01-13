@@ -31,7 +31,7 @@ export default function NewsFeed() {
     }, 1000)
 
     return () => clearInterval(interval)
-  }, [loading])
+  }, [loading, userInfo])
 
   if (newsFeedShown == false || userInfo == null) {
     return;

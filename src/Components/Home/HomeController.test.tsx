@@ -5,6 +5,14 @@ import axios from "axios";
 import { MemoryRouter } from "react-router";
 
 jest.mock("axios");
+jest.mock("@/Hooks/useEnvironmentVariable", () => ({
+  useEnvironmentVariable: (key: string) => {
+    const mockEnvVars: Record<string, string> = {
+      VITE_STEAM_FEATURED: "http://mock-steam-featured-api.com",
+    };
+    return mockEnvVars[key];
+  },
+}));
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
@@ -97,11 +105,12 @@ describe("HomeController Component", () => {
 
     // Wait for the error message to appear
     await waitFor(() => {
-      expect(screen.getByText(/error fetching games, please try reloading the page/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/error fetching games, please try reloading the page/i)
+      ).toBeInTheDocument();
     });
 
     // Ensure loading state is gone
-    // \b is exact match
     expect(screen.queryByText(/\bloading\b/i)).not.toBeInTheDocument();
   });
 
@@ -112,11 +121,12 @@ describe("HomeController Component", () => {
 
     // Wait for the error message to appear
     await waitFor(() => {
-      expect(screen.getByText(/error fetching games, please try reloading the page/i)).toBeInTheDocument();
+      expect(
+        screen.getByText(/error fetching games, please try reloading the page/i)
+      ).toBeInTheDocument();
     });
 
     // Ensure loading state is gone
-    // \b is exact match
     expect(screen.queryByText(/\bloading\b/i)).not.toBeInTheDocument();
   });
 
@@ -131,7 +141,9 @@ describe("HomeController Component", () => {
     // Wait for the data to load
     await waitFor(() => {
       expect(mockedAxios.get).toHaveBeenCalledTimes(1);
-      expect(mockedAxios.get).toHaveBeenCalledWith(process.env.VITE_STEAM_FEATURED || "");
+      expect(mockedAxios.get).toHaveBeenCalledWith(
+        "http://mock-steam-featured-api.com"
+      );
     });
 
     // Ensure loading message is removed after data is loaded

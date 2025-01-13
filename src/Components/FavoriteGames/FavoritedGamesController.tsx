@@ -5,18 +5,20 @@ import { useEffect, useState } from "react";
 import { useUserInfo } from "@/Hooks/useUserInfo";
 import { FavoriteGameType } from "@/Types/FavoriteGamesTypes";
 import { useDefaultRequestOptions } from "@/Hooks/useDefaultRequestOptions";
+import { useEnvironmentVariable } from "@/Hooks/useEnvironmentVariable";
 
 export default function FavoritedGamesController() {
   const [games, setGames] = useState<FavoriteGameType[]>([]);
   const { loading, userInfo } = useUserInfo();
   const { defaultOptions } = useDefaultRequestOptions();
+  const VITE_BACKEND = useEnvironmentVariable("VITE_BACKEND")
 
   useEffect(() => {
     if (userInfo == null) {
       return;
     }
 
-    axios.get(`${process.env.VITE_BACKEND}/game/favorites?username=${userInfo.username}`)
+    axios.get(`${VITE_BACKEND}/game/favorites?username=${userInfo.username}`)
       .then(res => {
         setGames(res.data)
       })
@@ -29,7 +31,7 @@ export default function FavoritedGamesController() {
     if (userInfo == null) {
       return;
     }
-    axios.delete(`${process.env.VITE_BACKEND}/game/favorites?username=${userInfo.username}&appid=${appId}`, defaultOptions)
+    axios.delete(`${VITE_BACKEND}/game/favorites?username=${userInfo.username}&appid=${appId}`, defaultOptions)
       .then(() => {
         setGames(prev => {
           return prev.filter(item => {

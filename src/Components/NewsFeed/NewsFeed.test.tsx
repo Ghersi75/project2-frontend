@@ -12,6 +12,14 @@ jest.mock("axios");
 jest.mock("@/Hooks/useNewsFeedShown");
 jest.mock("@/Hooks/useUserInfo");
 jest.mock("@/Hooks/useDefaultRequestOptions");
+jest.mock("@/Hooks/useEnvironmentVariable", () => ({
+  useEnvironmentVariable: (key: string) => {
+    const mockEnvVars: Record<string, string> = {
+      VITE_BACKEND: "http://mock-backend",
+    };
+    return mockEnvVars[key];
+  },
+}));
 
 // Enable Jest fake timers for the entire file
 jest.useFakeTimers();
@@ -59,9 +67,6 @@ describe("NewsFeed Component", () => {
     mockUseDefaultRequestOptions.mockReturnValue({
       defaultOptions: { headers: { Authorization: "Bearer token" } },
     });
-
-    // Mock environment
-    process.env.VITE_BACKEND = "http://mock-backend";
   });
 
   // Does not want to work

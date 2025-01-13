@@ -6,6 +6,7 @@ import ProfileUsernameForm from "./ProfileUsernameForm";
 import ProfileDisplayNameForm from "./ProfileDisplayNameForm";
 import axios from "axios";
 import { useDefaultRequestOptions } from "@/Hooks/useDefaultRequestOptions";
+import { useEnvironmentVariable } from "@/Hooks/useEnvironmentVariable";
 
 export default function Profile() {
   const { userInfo, loading } = useUserInfo();
@@ -21,6 +22,7 @@ export default function Profile() {
   const [newPassword, setNewPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [passwordSuccess, setPasswordSuccess] = useState("");
+  const VITE_BACKEND = useEnvironmentVariable("VITE_BACKEND")
 
   useEffect(() => {
     if (userInfo == null) {
@@ -44,7 +46,7 @@ export default function Profile() {
       newUsername: username
     }
 
-    axios.put(`${process.env.VITE_BACKEND}/user/username?username=${userInfo.username}`, body, defaultOptions)
+    axios.put(`${VITE_BACKEND}/user/username?username=${userInfo.username}`, body, defaultOptions)
       .then(() => {
         setUsernameSuccess("Username successfully updated")
       })
@@ -60,7 +62,7 @@ export default function Profile() {
       newDisplayName: displayName
     }
 
-    axios.put(`${process.env.VITE_BACKEND}/user/displayname?username=${userInfo.username}`, body, defaultOptions)
+    axios.put(`${VITE_BACKEND}/user/displayname?username=${userInfo.username}`, body, defaultOptions)
       .then(() => {
         setDisplayNameSuccess("Display name successfully updated")
       })
@@ -77,7 +79,7 @@ export default function Profile() {
       newPassword
     }
 
-    axios.put(`${process.env.VITE_BACKEND}/user/password?username=${userInfo.username}`, body, defaultOptions)
+    axios.put(`${VITE_BACKEND}/user/password?username=${userInfo.username}`, body, defaultOptions)
       .then(() => {
         setPasswordSuccess("Password successfully updated")
       })

@@ -7,6 +7,15 @@ import { MemoryRouter } from "react-router";
 
 jest.mock("@/Hooks/useGameSearch");
 jest.mock("@/Hooks/useSaveGameSearch");
+jest.mock("@/Hooks/useEnvironmentVariable", () => ({
+  useEnvironmentVariable: (key: string) => {
+    const mockEnvVars: Record<string, string> = {
+      VITE_BACKEND: "http://mock-backend.com",
+      VITE_OTHER_ENV: "http://mock-other-env.com",
+    };
+    return mockEnvVars[key];
+  },
+}));
 
 const mockUseGameSearch = useGameSearch as jest.Mock;
 const mockUseSaveGameSearch = useSaveGameSearch as jest.Mock;
@@ -16,8 +25,8 @@ const TestComponent = () => {
     <MemoryRouter>
       <SearchPage />
     </MemoryRouter>
-  )
-}
+  );
+};
 
 describe("SearchPage Component", () => {
   beforeEach(() => {
@@ -90,9 +99,9 @@ describe("SearchPage Component", () => {
   test("handles case where searching is null and no games are found", () => {
     mockUseSaveGameSearch.mockReturnValue({ searchParam: "" });
     mockUseGameSearch.mockReturnValue({ searching: null, gamesFound: [] });
-  
+
     render(<TestComponent />);
-  
+
     // Assert that nothing is rendered (the condition resolves to null)
     expect(screen.queryByText(/searching.../i)).not.toBeInTheDocument();
     expect(screen.queryByText(/nothing found/i)).not.toBeInTheDocument();

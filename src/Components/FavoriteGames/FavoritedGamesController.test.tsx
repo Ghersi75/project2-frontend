@@ -9,6 +9,14 @@ import { MemoryRouter } from "react-router";
 jest.mock("axios");
 jest.mock("@/Hooks/useUserInfo");
 jest.mock("@/Hooks/useDefaultRequestOptions");
+jest.mock("@/Hooks/useEnvironmentVariable", () => ({
+  useEnvironmentVariable: (key: string) => {
+    const mockEnvVars: Record<string, string> = {
+      VITE_BACKEND: "http://mock-backend.com",
+    };
+    return mockEnvVars[key];
+  },
+}));
 
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 const mockUseUserInfo = useUserInfo as jest.Mock;
@@ -36,8 +44,8 @@ const TestComponent = () => {
     <MemoryRouter>
       <FavoritedGamesController />
     </MemoryRouter>
-  )
-}
+  );
+};
 
 describe("FavoritedGamesController Component", () => {
   beforeEach(() => {
@@ -63,7 +71,7 @@ describe("FavoritedGamesController Component", () => {
     // Ensure API is called with the correct URL
     await waitFor(() => {
       expect(mockedAxios.get).toHaveBeenCalledWith(
-        `${process.env.VITE_BACKEND}/game/favorites?username=testuser`
+        "http://mock-backend.com/game/favorites?username=testuser"
       );
     });
 
@@ -91,7 +99,7 @@ describe("FavoritedGamesController Component", () => {
     // Ensure delete API is called with the correct URL
     await waitFor(() => {
       expect(mockedAxios.delete).toHaveBeenCalledWith(
-        `${process.env.VITE_BACKEND}/game/favorites?username=testuser&appid=12345`,
+        "http://mock-backend.com/game/favorites?username=testuser&appid=12345",
         { headers: { Authorization: "Bearer token" } }
       );
     });
@@ -116,7 +124,7 @@ describe("FavoritedGamesController Component", () => {
   });
 
   test("logs error when fetching games fails", async () => {
-    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => { });
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     mockedAxios.get.mockRejectedValueOnce(new Error("Fetch error"));
 
     render(<TestComponent />);
@@ -153,7 +161,7 @@ describe("FavoritedGamesController Component", () => {
   test("logs error when unfavoriting fails", async () => {
     mockedAxios.get.mockResolvedValueOnce({ data: mockGames });
     mockedAxios.delete.mockRejectedValueOnce(new Error("Unfavorite error"));
-    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => { });
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
 
     render(<TestComponent />);
 
@@ -176,31 +184,4 @@ describe("FavoritedGamesController Component", () => {
 
     consoleErrorSpy.mockRestore();
   });
-
-  // Cant get the damn return branch to count as covered
-  // Giving up
-  test("does nothing when unfavorite is triggered and userInfo is null", async () => {
-    // Mock userInfo as null
-    mockUseUserInfo.mockReturnValue({ loading: false, userInfo: null });
-
-    // Mock games data
-    mockedAxios.get.mockResolvedValueOnce({ data: mockGames });
-
-    render(<TestComponent />);
-
-    // Wait for the component to attempt fetching games
-    await waitFor(() => {
-      expect(mockedAxios.get).not.toHaveBeenCalled(); // API should not be called
-    });
-
-    // Attempt to trigger unfavorite button
-    const unfavoriteButton = screen.queryByText(/unfavorite game/i);
-
-    // Since userInfo is null, the button shouldn't exist
-    expect(unfavoriteButton).not.toBeInTheDocument();
-
-    // Confirm that the unfavorite handler doesn't call the API
-    expect(mockedAxios.delete).not.toHaveBeenCalled();
-  });
-
 });

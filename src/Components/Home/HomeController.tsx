@@ -2,6 +2,7 @@ import { HomeGameInfoType } from "@/Types/GameAPIReturnTypes";
 import Home from "./Home";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useEnvironmentVariable } from "@/Hooks/useEnvironmentVariable";
 
 export default function HomeController() {
   const [specials, setSpecials] = useState<HomeGameInfoType[]>([]);
@@ -9,9 +10,10 @@ export default function HomeController() {
   const [newReleases, setNewReleases] = useState<HomeGameInfoType[]>([]);
   const [comingSoon, setComingSoon] = useState<HomeGameInfoType[]>([]);
   const [loading, setLoading] = useState(true)
+  const VITE_STEAM_FEATURED = useEnvironmentVariable("VITE_STEAM_FEATURED")
 
   useEffect(() => {
-    axios.get(process.env.VITE_STEAM_FEATURED || "")
+    axios.get(VITE_STEAM_FEATURED || "")
       .then(res => {
         setSpecials(res.data?.specials.items || []);
         setTopSellers(res.data?.top_sellers.items || []);

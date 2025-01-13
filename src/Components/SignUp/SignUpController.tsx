@@ -3,6 +3,7 @@ import { useState } from "react"
 import SignUp from "./SignUp";
 import RedirectIfLoggedIn from "../RouteGuards/RedirectIfLoggedIn";
 import { useDefaultRequestOptions } from "@/Hooks/useDefaultRequestOptions";
+import { useEnvironmentVariable } from "@/Hooks/useEnvironmentVariable";
 
 export default function SignUpController() {
   const [username, setUsername] = useState("");
@@ -10,12 +11,13 @@ export default function SignUpController() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { defaultOptions } = useDefaultRequestOptions();
+  const VITE_BACKEND = useEnvironmentVariable("VITE_BACKEND")
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
 
-    axios.post(`${process.env.VITE_BACKEND}/user/register`, {
+    axios.post(`${VITE_BACKEND}/user/register`, {
       username,
       displayName,
       password,

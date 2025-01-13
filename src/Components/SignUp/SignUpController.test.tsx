@@ -7,6 +7,15 @@ import { BrowserRouter } from "react-router";
 import { UserProvider } from "@/Contexts/UserContext";
 
 jest.mock("axios");
+jest.mock("@/Hooks/useEnvironmentVariable", () => ({
+  useEnvironmentVariable: (key: string) => {
+    const mockEnvVars: Record<string, string> = {
+      VITE_BACKEND: "http://mock-backend.com",
+    };
+    return mockEnvVars[key];
+  },
+}));
+
 const mockAxiosPost = axios.post as jest.Mock;
 
 const defaultOptions = {
@@ -15,11 +24,11 @@ const defaultOptions = {
     Authorization: "Bearer mockAuthToken",
   },
   withCredentials: true,
-}
+};
 
 jest.mock("@/Hooks/useDefaultRequestOptions", () => ({
   useDefaultRequestOptions: () => ({
-    defaultOptions
+    defaultOptions,
   }),
 }));
 
@@ -64,7 +73,7 @@ test("handles user input and form submission successfully", async () => {
   // Ensure axios.post is called with correct payload
   await waitFor(() => {
     expect(mockAxiosPost).toHaveBeenCalledWith(
-      `${process.env.VITE_BACKEND}/user/register`,
+      "http://mock-backend.com/user/register",
       {
         username: "testuser",
         displayName: "Test User",

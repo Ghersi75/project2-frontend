@@ -5,12 +5,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useDefaultRequestOptions } from "@/Hooks/useDefaultRequestOptions";
 import { NewsFeedItemType } from "@/Types/NotificationsTypes";
+import { useEnvironmentVariable } from "@/Hooks/useEnvironmentVariable";
 
 export default function NewsFeed() {
   const { newsFeedShown } = useNewsFeedShown();
   const { loading, userInfo } = useUserInfo();
   const { defaultOptions } = useDefaultRequestOptions();
   const [notifications, setNotifications] = useState<NewsFeedItemType[]>([])
+  const VITE_BACKEND = useEnvironmentVariable("VITE_BACKEND")
 
   useEffect(() => {
     if (userInfo == null) {
@@ -18,7 +20,7 @@ export default function NewsFeed() {
     }
 
     const interval = setInterval(() => {
-      axios.get(`${process.env.VITE_BACKEND}/notifications/${userInfo?.username}`, defaultOptions)
+      axios.get(`${VITE_BACKEND}/notifications/${userInfo?.username}`, defaultOptions)
         .then(res => {
           setNotifications(res.data)
           console.log(res)
@@ -36,7 +38,7 @@ export default function NewsFeed() {
   }
 
   const handleDelete = (id: number) => {
-    axios.delete(`${process.env.VITE_BACKEND}/notifications/${id}`, defaultOptions)
+    axios.delete(`${VITE_BACKEND}/notifications/${id}`, defaultOptions)
       .then(() => {
         setNotifications(prev => {
           return prev.filter(item => {

@@ -3,7 +3,7 @@ import { useCookies } from "react-cookie"
 
 export const useAuthToken = () => {
   const [cookies] = useCookies(["token"]);
-  const [authToken, setAuthToken] = useState("");
+  const [authToken, setAuthToken] = useState("Bearer " + cookies.token);
 
   useEffect(() => {
     setAuthToken("Bearer " + cookies.token);

@@ -15,8 +15,15 @@ jobs:
     
     steps:
       # Checkout the code
-      - name: Checkout Code
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup nodejs
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      # Clean install
+      - run: npm ci
+      - run: npm test
       
       - name: Run tests and build vite project with production environment variables
         run: npm run build

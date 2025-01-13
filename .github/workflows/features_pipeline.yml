@@ -11,7 +11,7 @@ jobs:
     name: Run tests and build container image
     runs-on: ubuntu-latest
     env:
-      DOCKER_REPO: ${{ secrets.DOCKER_USERNAME }}/project2-fronted:dev
+      DOCKER_REPO: ${{ secrets.DOCKER_USERNAME }}/project2-frontend:dev
     
     steps:
       # Checkout the code

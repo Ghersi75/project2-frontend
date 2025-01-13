@@ -41,8 +41,8 @@ jobs:
           docker push $DOCKER_REPO
 
   deploy:
+    needs: test_and_build
     runs-on: [self-hosted, frontend]
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     env:
       DOCKER_REPO: ${{ secrets.DOCKER_USERNAME }}/project2-frontend:dev

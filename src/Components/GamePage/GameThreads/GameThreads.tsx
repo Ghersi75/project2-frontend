@@ -1,69 +1,31 @@
 import { Button } from "@/Components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Input } from "@/Components/ui/input";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { useParams } from "react-router";
-import { useCookies } from "react-cookie";
-import { useUserInfo } from "@/Hooks/useUserInfo";
 import { GameThreadType } from "@/Types/GameAPIReturnTypes";
 import GameThreadCardController from "./GameThreadCardController";
-import { useGamePageInfo } from "@/Hooks/useGamePageInfo";
 
-export default function GameThreads() {
-  const [reviewText, setReviewText] = useState("")
-  const [cookies] = useCookies(["token"]);
-  const { appId } = useParams();
-  const { userInfo } = useUserInfo();
-  const { gameName } = useGamePageInfo();
-  const [data, setData] = useState<GameThreadType[]>([]);
-
-  useEffect(() => {
-    axios.get(`${import.meta.env.VITE_BACKEND}/reviews/games/${appId}`, {
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${cookies.token}`,
-      },
-      withCredentials: true
-    })
-      .then(res => {
-        setData(res.data)
-      })
-      .catch(err => {
-        console.error(err);
-      })
-  }, [])
-
-  const handleSubmit = () => {
-    const body = {
-      content: reviewText,
-      appid: appId,
-      gameName: gameName
-    }
-
-    axios.post(`${import.meta.env.VITE_BACKEND}/reviews/${userInfo?.username}`, body, {
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${cookies.token}`,
-      },
-      withCredentials: true
-    })
-      .then(res => {
-        setData(prev => [res.data, ...prev])
-        setReviewText("")
-      })
-      .catch(err => {
-        console.error(err);
-      })
-  }
-
+export default function GameThreads({
+  loggedIn,
+  reviewText,
+  setReviewText,
+  handleSubmit,
+  data,
+  setData
+}: {
+  loggedIn: boolean,
+  reviewText: string,
+  setReviewText: React.Dispatch<React.SetStateAction<string>>,
+  handleSubmit: () => void,
+  data: GameThreadType[],
+  setData: React.Dispatch<React.SetStateAction<GameThreadType[]>>
+}) {
   return (
     <>
       <Card>
         <CardHeader>
           <CardTitle>
             {
-              userInfo == null ?
+              !loggedIn ?
                 `Log in to write a review for this game` :
                 `Write a review for this game`
             }
@@ -75,11 +37,11 @@ export default function GameThreads() {
             value={reviewText}
             onChange={(e) => setReviewText(e.target.value)}
             className="h-[1rem] py-5"
-            disabled={userInfo == null}
+            disabled={!loggedIn}
           />
         </CardContent>
         <CardFooter className="grid">
-          <Button variant="outline" disabled={userInfo == null || reviewText == ""} className="w-fit justify-self-end" onClick={handleSubmit}>
+          <Button variant="outline" disabled={!loggedIn || reviewText == ""} className="w-fit justify-self-end" onClick={handleSubmit}>
             Submit
           </Button>
         </CardFooter>

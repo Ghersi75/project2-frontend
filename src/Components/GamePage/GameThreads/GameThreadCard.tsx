@@ -130,13 +130,13 @@ export default function GameThreadCard({
       <CardFooter className="flex flex-col gap-1 justify-start items-start">
         <div className="flex flex-row gap-2">
           <div className="flex flex-row justify-center items-center gap-1">
-            <BiUpvote className={canInteract ? likedStyle : cantInteractStyle} onClick={!canInteract ? undefined : () => {
+            <BiUpvote data-testid="BiUpvote-icon" className={canInteract ? likedStyle : cantInteractStyle} onClick={!canInteract ? undefined : () => {
               updateThreadId();
               handleInteraction(true)
             }} /> {likes}
           </div>
           <div className="flex flex-row justify-center items-center gap-1">
-            <BiDownvote className={canInteract ? dislikedStyle : cantInteractStyle} onClick={!canInteract ? undefined : () => {
+            <BiDownvote data-testid="BiDownvote-icon" className={canInteract ? dislikedStyle : cantInteractStyle} onClick={!canInteract ? undefined : () => {
               updateThreadId();
               handleInteraction(false)
             }} /> {dislikes}

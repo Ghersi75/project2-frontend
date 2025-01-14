@@ -32,7 +32,7 @@ export default function GamePage() {
     // cors anywhere gets rid of annoying cors errors during development
     axios.get(`https://cors-anywhere.herokuapp.com/http://store.steampowered.com/api/appdetails?appids=${appId}`)
       .then(res => {
-        if (res.data[appId].data.success == false) {
+        if (res.data[appId].success == false) {
           // Return to home page if no game is found with given appId
           navigate("/");
         }
@@ -129,18 +129,21 @@ export default function GamePage() {
                 })}
               </div>
             </div>
-            <Button variant="outline" className="items-center hover:underline" onClick={handleSetFavorite}>
-              {
-                favorited ?
-                  <>
-                    Unfavorite game: <BiSolidBookmark />
-                  </>
-                  :
-                  <>
-                    Favorite game: <BiBookmark />
-                  </>
-              }
-            </Button>
+            {
+              userInfo != null &&
+              <Button variant="outline" className="items-center hover:underline" onClick={handleSetFavorite}>
+                {
+                  favorited ?
+                    <>
+                      Unfavorite game: <BiSolidBookmark />
+                    </>
+                    :
+                    <>
+                      Favorite game: <BiBookmark />
+                    </>
+                }
+              </Button>
+            }
           </div>
           {
             gameInfo.screenshots && gameInfo.screenshots.length > 0 &&

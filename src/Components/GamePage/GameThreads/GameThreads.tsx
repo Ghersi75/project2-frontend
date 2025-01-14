@@ -62,7 +62,11 @@ export default function GameThreads() {
       <Card>
         <CardHeader>
           <CardTitle>
-            Write a review for this game
+            {
+              userInfo == null ?
+                `Log in to write a review for this game` :
+                `Write a review for this game`
+            }
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -71,10 +75,11 @@ export default function GameThreads() {
             value={reviewText}
             onChange={(e) => setReviewText(e.target.value)}
             className="h-[1rem] py-5"
+            disabled={userInfo == null}
           />
         </CardContent>
         <CardFooter className="grid">
-          <Button variant="outline" disabled={reviewText == ""} className="w-fit justify-self-end" onClick={handleSubmit}>
+          <Button variant="outline" disabled={userInfo == null || reviewText == ""} className="w-fit justify-self-end" onClick={handleSubmit}>
             Submit
           </Button>
         </CardFooter>

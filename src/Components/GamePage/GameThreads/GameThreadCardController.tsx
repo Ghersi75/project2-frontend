@@ -7,6 +7,7 @@ import GameThreadCard from "./GameThreadCard";
 import { format } from "date-fns";
 import { useParams } from "react-router";
 import { useGamePageInfo } from "@/Hooks/useGamePageInfo";
+import { useEnvironmentVariable } from "@/Hooks/useEnvironmentVariable";
 
 export default function GameThreadCardController({
   item,
@@ -25,6 +26,7 @@ export default function GameThreadCardController({
   const [content, setContent] = useState(item.content);
   const { appId } = useParams()
   const { gameName } = useGamePageInfo();
+  const VITE_BACKEND = useEnvironmentVariable("VITE_BACKEND")
 
   const canInteract = userInfo != null && userInfo.username != item.username
   const canEdit = userInfo != null && userInfo.username == item.username;
@@ -41,7 +43,7 @@ export default function GameThreadCardController({
       interaction: like ? "LIKE" : "DISLIKE"
     }
 
-    axios.post(`${import.meta.env.VITE_BACKEND}/reviews/${like ? "like" : "dislike"}?username=${userInfo.username}`, body, defaultOptions)
+    axios.post(`${VITE_BACKEND}/reviews/${like ? "like" : "dislike"}?username=${userInfo.username}`, body, defaultOptions)
       .then((res) => {
         console.log(res)
         setData(prev =>
@@ -67,14 +69,14 @@ export default function GameThreadCardController({
     const body = {
       content: content
     }
-    axios.put(`${import.meta.env.VITE_BACKEND}/reviews/${userInfo?.username}/${item.reviewId}`, body, defaultOptions)
+    axios.put(`${VITE_BACKEND}/reviews/${userInfo?.username}/${item.reviewId}`, body, defaultOptions)
       .catch(err => {
         console.error(err)
       })
   }
 
   const handleDeleteReview = () => {
-    axios.delete(`${import.meta.env.VITE_BACKEND}/reviews/${userInfo?.username}/${item.reviewId}`, defaultOptions)
+    axios.delete(`${VITE_BACKEND}/reviews/${userInfo?.username}/${item.reviewId}`, defaultOptions)
       .then((_) => {
         setData(prev =>
           prev.filter(review =>

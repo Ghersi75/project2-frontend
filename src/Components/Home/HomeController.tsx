@@ -15,10 +15,30 @@ export default function HomeController() {
   useEffect(() => {
     axios.get(VITE_STEAM_FEATURED || "")
       .then(res => {
-        setSpecials(res.data?.specials.items || []);
-        setTopSellers(res.data?.top_sellers.items || []);
-        setNewReleases(res.data?.new_releases.items || []);
-        setComingSoon(res.data?.coming_soon.items || []);
+        const uniqueSpecials = [
+          ...(res.data?.specials.items as HomeGameInfoType[]).filter((item, index, items) =>
+            items.findIndex((t) => t.id === item.id) === index
+          )
+        ]
+        setSpecials(uniqueSpecials);
+        const uniqueTopSellers = [
+          ...(res.data?.top_sellers.items as HomeGameInfoType[]).filter((item, index, items) =>
+            items.findIndex((t) => t.id === item.id) === index
+          )
+        ]
+        setTopSellers(uniqueTopSellers);
+        const uniqueNewReleases = [
+          ...(res.data?.new_releases.items as HomeGameInfoType[]).filter((item, index, items) =>
+            items.findIndex((t) => t.id === item.id) === index
+          )
+        ]
+        setNewReleases(uniqueNewReleases);
+        const uniqueComingSoon = [
+          ...(res.data?.coming_soon.items as HomeGameInfoType[]).filter((item, index, items) =>
+            items.findIndex((t) => t.id === item.id) === index
+          )
+        ]
+        setComingSoon(uniqueComingSoon);
       })
       .catch(() => {
         // Just fallback to empty arrays and let display show that theres an error

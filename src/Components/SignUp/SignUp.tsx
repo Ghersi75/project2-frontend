@@ -72,7 +72,7 @@ export default function SignUp({
                 or continue as a guest
               </span>
             </div>
-            <Link to="/"><Button variant="secondary" className="w-full"> Ruturn to Home page </Button></Link>
+            <Link to="/"><Button variant="secondary" className="w-full"> Return to Home page </Button></Link>
           </div>
         </form>
       </CardContent>

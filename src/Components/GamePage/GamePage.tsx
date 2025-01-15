@@ -13,6 +13,7 @@ import { capitalizeFirst } from "@/lib/utils";
 import { useUserInfo } from "@/Hooks/useUserInfo";
 import { useDefaultRequestOptions } from "@/Hooks/useDefaultRequestOptions";
 import { useGamePageInfo } from "@/Hooks/useGamePageInfo";
+import { useEnvironmentVariable } from "@/Hooks/useEnvironmentVariable";
 
 export default function GamePage() {
   const { appId } = useParams();
@@ -22,6 +23,8 @@ export default function GamePage() {
   const { userInfo } = useUserInfo();
   const { defaultOptions } = useDefaultRequestOptions();
   const { setGameName } = useGamePageInfo();
+  const VITE_STEAM_APP_DETAILS = useEnvironmentVariable("VITE_STEAM_APP_DETAILS");
+  const VITE_BACKEND = useEnvironmentVariable("VITE_BACKEND");
 
   if (appId == undefined) {
     return;
@@ -30,7 +33,7 @@ export default function GamePage() {
   useEffect(() => {
     // TODO: Don't forget to update link
     // cors anywhere gets rid of annoying cors errors during development
-    axios.get(`https://cors-anywhere.herokuapp.com/http://store.steampowered.com/api/appdetails?appids=${appId}`)
+    axios.get(`${VITE_STEAM_APP_DETAILS}?appids=${appId}`)
       .then(res => {
         if (res.data[appId].success == false) {
           // Return to home page if no game is found with given appId
@@ -65,7 +68,7 @@ export default function GamePage() {
       return;
     }
 
-    axios.get(`${import.meta.env.VITE_BACKEND}/game/favorites/${appId}?username=${userInfo.username}`)
+    axios.get(`${VITE_BACKEND}/game/favorites/${appId}?username=${userInfo.username}`)
       .then((res) => {
         console.log("here")
         setFavorited(res.data.favorited)
@@ -85,7 +88,7 @@ export default function GamePage() {
     }
     if (favorited) {
       // Delete favorite
-      axios.delete(`${import.meta.env.VITE_BACKEND}/game/favorites?username=${userInfo.username}&appid=${appId}`, defaultOptions)
+      axios.delete(`${VITE_BACKEND}/game/favorites?username=${userInfo.username}&appid=${appId}`, defaultOptions)
         .then((_) => {
           setFavorited(prev => !prev)
         })
@@ -101,7 +104,7 @@ export default function GamePage() {
         availableOn: gameInfo.availableOn
       }
 
-      axios.post(`${import.meta.env.VITE_BACKEND}/game/favorites?username=${userInfo.username}&appid=${appId}`, body, defaultOptions)
+      axios.post(`${VITE_BACKEND}/game/favorites?username=${userInfo.username}&appid=${appId}`, body, defaultOptions)
         .then((_) => {
           setFavorited(prev => !prev)
         })

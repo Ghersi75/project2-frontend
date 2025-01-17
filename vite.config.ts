@@ -5,7 +5,9 @@ import { resolve } from "path";
 // Updated config according to guide above in order to properly expose the application while running in a docker container
 export default defineConfig({
   base: "/",
-  plugins: [react()],
+  plugins: [
+    react(),
+  ],
   preview: {
     port: 8080,
     strictPort: true,

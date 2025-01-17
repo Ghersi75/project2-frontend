@@ -64,3 +64,8 @@
     @apply bg-background text-foreground;
   }
 }
+/* Needed for custom line break. Fixes breaking up segments of symbols */
+.break-anywhere {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
